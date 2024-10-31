@@ -1,5 +1,7 @@
 package com.ada.holiday_party_planning.service;
 
+import com.ada.holiday_party_planning.model.Item;
+
 public class ItemImp {
     private int id;
     private String name;
@@ -45,7 +47,15 @@ public class ItemImp {
         this.price = price;
     }
 
-    public void createItem(){
+    public void createItem(Item item){
+
+    }
+
+    public Item updateItem(int id, Item item) {
+        return null;
+    }
+
+    public void deleteItem (int id){
 
     }
 }
