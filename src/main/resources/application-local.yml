@@ -1,13 +1,17 @@
 spring:
-  application:
-    name: christmas-tree
-  datasource:
-    url: jdbc:postgresql://localhost:5432/lc_party_planner
-    username:
-    password:
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    application:
+      name: christmas-tree
+    security:
+      user:
+        name: admin
+        password: 123456
+    datasource:
+      url: jdbc:postgresql://localhost:5432/lc_party_planner
+      username: postgres
+      password: 123456
+      driver-class-name: org.postgresql.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect

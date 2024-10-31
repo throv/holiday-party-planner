@@ -1,7 +1,6 @@
 package com.ada.holiday_party_planning.model;
 
 import jakarta.persistence.*;
-
 import java.util.UUID;
 
 @Entity
@@ -19,10 +18,12 @@ public class Item {
     @Column(name="quantity", nullable = false)
     private int quantity;
 
-    @Column(name= "value", nullable = false )
+    @Column(name= "value", nullable = false)
     private double value;
 
     @ManyToOne
     @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false)
-            private Event eventId;
+    private Event eventId;
+
 }
+
