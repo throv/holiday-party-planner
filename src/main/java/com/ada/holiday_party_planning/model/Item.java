@@ -19,8 +19,8 @@ public class Item {
     @Column(name="quantity", nullable = false)
     private int quantity;
 
-    @Column(name= "value", nullable = false )
-    private double value;
+    @Column(name= "price", nullable = false )
+    private double price;
 
     @ManyToOne
     @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false)
