@@ -1,45 +1,23 @@
-package com.ada.holiday_party_planning.model;
+package com.ada.holiday_party_planning.dto;
 
+import com.ada.holiday_party_planning.model.Event;
 import jakarta.persistence.*;
+
 import java.util.UUID;
 
-@Entity
-@Table(name = "item")
-public class Item {
+public class ItemDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "item_Id", nullable = false)
     private UUID itemId;
-
-    @Column(name ="name", nullable = false)
     private String name;
-
-    @Column(name="quantity", nullable = false)
     private int quantity;
-
-    @Column(name= "value", nullable = false)
     private double value;
-
-    @Column(name = "event_id")
     private UUID eventId;
 
-    public Item() {
-    }
-
-    public Item(UUID itemId, String name, int quantity, double value, UUID eventId) {
+    public ItemDTO(UUID itemId, String name, int quantity, double value, UUID eventId) {
         this.itemId = itemId;
         this.name = name;
         this.quantity = quantity;
         this.value = value;
-        this.eventId = eventId;
-    }
-
-    public UUID getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(UUID eventId) {
         this.eventId = eventId;
     }
 
@@ -75,6 +53,12 @@ public class Item {
         this.value = value;
     }
 
+    public UUID getEventId() {
+        return eventId;
+    }
 
+    public void setEventId(UUID eventId) {
+        this.eventId = eventId;
+    }
 }
 
