@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
-		<relativePath/> <!-- lookup parent from com.ada.holiday_party_planning.Repository -->
+		<relativePath/> <!-- lookup parent from com.ada.holiday_party_planning.repository -->
 	</parent>
 	<groupId>com.ada</groupId>
 	<artifactId>holiday-party-planning</artifactId>

@@ -30,6 +30,9 @@ public class Event {
     @OneToMany
     private List<Guest> guests;
 
+    @OneToMany
+    private List<Item> items;
+
     public Event() {
     }
 
