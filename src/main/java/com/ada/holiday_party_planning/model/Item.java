@@ -22,7 +22,7 @@ public class Item {
     private double value;
 
     @ManyToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false)
+    @JoinColumn(name = "event_id", referencedColumnName = "event_id", nullable = false)
     private Event eventId;
 
 }
