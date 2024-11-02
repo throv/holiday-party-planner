@@ -1,0 +1,91 @@
+body {
+    max-width: 1200px;
+    background-color: #545499;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.box_principal {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.forms_cadastro {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.forms_cadastro h3 {
+    text-align: center;
+    margin: 0px auto;
+    padding: 3px;
+}
+
+.forms_cadastro input[type="text"],
+.forms_cadastro input[type="password"] {
+    width: 95%;
+    font-size: 18px;
+    padding: 10px;
+    margin: 12px auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease; /* Adiciona transição */
+}
+
+.forms_cadastro input[type="text"]:focus,
+.forms_cadastro input[type="password"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.4); /* Efeito de foco */
+    transform: scale(1.05); /* Leve aumento no tamanho */
+}
+
+.forms_cadastro label {
+    font-size: 10px;
+}
+
+.termos_label {
+    display: flex;
+    align-items: center;
+    margin: 10px auto;
+}
+
+.termos_label input {
+    margin-right: 10px;
+}
+
+.termos_label p {
+    font-size: 14px;
+}
+
+.termos_label a {
+    text-decoration: none;
+}
+
+.forms_cadastro button {
+    width: 95%;
+    max-width: 350px;            
+    padding: 12px;          
+    background-color: #4CAF50; 
+    color: white;         
+    border: none;           
+    border-radius: 5px;     
+    font-size: 18px;        
+    cursor: pointer; 
+    transition: background-color 0.3s ease;
+    margin: auto;
+}  
+
+.forms_cadastro button:hover {
+    background-color: #3c6e3e; /* Mudança de cor ao passar o mouse */
+}
+
