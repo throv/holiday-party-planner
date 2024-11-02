@@ -26,7 +26,7 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    public List<ItemDTO> getItems(UUID eventId) {
+/*    public List<ItemDTO> getItems(UUID eventId) {
         Item example = new Item();
         example.setEventId(eventId);
         ExampleMatcher matcher = ExampleMatcher
@@ -35,7 +35,7 @@ public class ItemService {
                 .withMatcher("eventId", exact());
         List<Item> eventItems = itemRepository.findAll(Example.of(example, matcher));
         return ItemMapper.toDTOList(eventItems);
-    }
+    }*/
 
     public ItemDTO getById(UUID itemId){
         Optional<Item> item =  itemRepository.findById(itemId);
