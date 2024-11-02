@@ -21,34 +21,27 @@ public class Item {
     @Column(name= "value", nullable = false)
     private double value;
 
-    @Column(name = "event_id")
-    private UUID eventId;
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
     public Item() {
     }
 
-    public Item(UUID itemId, String name, int quantity, double value, UUID eventId) {
+    public Item(UUID itemId, String name, int quantity, double value, Event event) {
         this.itemId = itemId;
         this.name = name;
         this.quantity = quantity;
         this.value = value;
-        this.eventId = eventId;
+        this.event = event;
     }
 
     public UUID getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(UUID eventId) {
-        this.eventId = eventId;
+        return event.getEventId();
     }
 
     public UUID getItemId() {
         return itemId;
-    }
-
-    public void setItemId(UUID itemId) {
-        this.itemId = itemId;
     }
 
     public String getName() {

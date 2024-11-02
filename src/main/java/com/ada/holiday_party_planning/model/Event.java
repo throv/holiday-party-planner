@@ -31,7 +31,6 @@ public class Event {
     private List<Guest> guests;
 
     @OneToMany
-    @JoinColumn(name = "event_id", referencedColumnName = "id")
     private List<Item> items;
 
     public Event() {
