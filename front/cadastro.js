@@ -5,10 +5,10 @@ function cadastrar() {
     const name_input = document.getElementById('name').value;
     const email_input = document.getElementById('email').value;
     const password_input = document.getElementById('password').value;
-    fetch("http://localhost:8080/usuario", {
+    fetch("http://localhost:8080/party-owners/register", {
         method: "POST",
         headers: {
-            "Aceept": "application/json",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
