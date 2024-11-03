@@ -5,6 +5,7 @@ import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Item;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class ItemMapper {
@@ -17,13 +18,13 @@ public class ItemMapper {
                 item.getEventId());
     }
 
-    public static Item toModel(ItemDTO itemDTO, Event event) {
+    public static Item toModel(ItemDTO itemDTO, UUID eventId) {
         return new Item(
                 itemDTO.getItemId(),
                 itemDTO.getName(),
                 itemDTO.getQuantity(),
                 itemDTO.getValue(),
-                event
+                eventId
         );
     }
 
