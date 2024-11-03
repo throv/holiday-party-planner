@@ -21,19 +21,19 @@ public class Item {
     @Column(name= "value", nullable = false)
     private double value;
 
-
-    @Column(name = "event_id", nullable = false)
-    private UUID eventId;
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
     public Item() {
     }
 
-    public Item(UUID itemId, String name, int quantity, double value, UUID eventId) {
+    public Item(UUID itemId, String name, int quantity, double value, Event event) {
         this.itemId = itemId;
         this.name = name;
         this.quantity = quantity;
         this.value = value;
-        this.eventId = eventId;
+        this.event = event;
     }
 
     public UUID getItemId() {
