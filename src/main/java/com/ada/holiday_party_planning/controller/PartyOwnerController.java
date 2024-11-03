@@ -1,11 +1,11 @@
 package com.ada.holiday_party_planning.controller;
 
+import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
-import com.ada.holiday_party_planning.model.PartyOwner;
+import com.ada.holiday_party_planning.dto.PartyOwnerLoginDTO;
 import com.ada.holiday_party_planning.service.PartyOwnerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +20,26 @@ public class PartyOwnerController {
     public PartyOwnerController(PartyOwnerService partyOwnerService) {
         this.partyOwnerService = partyOwnerService;
     }
+
+    @PostMapping ("/register")
+    public ResponseEntity<PartyOwnerDTO> createPartyOwner (@RequestBody CreatePartyOwnerDTO createPartyOwnerDTO) {
+
+        PartyOwnerDTO partyOwnerDTO = partyOwnerService.createPartyOwner(createPartyOwnerDTO);
+
+        return ResponseEntity
+                .status(201)
+                .body(partyOwnerDTO);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<PartyOwnerDTO> login(@RequestBody PartyOwnerLoginDTO partyOwnerLoginDTO) {
+        PartyOwnerDTO partyOwnerDTO = partyOwnerService.login(partyOwnerLoginDTO);
+
+        return ResponseEntity
+                .status(200)
+                .body(partyOwnerDTO);
+    }
+
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllPartyOwners() {
@@ -45,11 +65,5 @@ public class PartyOwnerController {
             return ResponseEntity.ok(newPartyOwner.get());
         }
     }
-
-
-/*    @PostMapping ("/register")
-    public PartyOwner creatPartyOwner (@RequestBody PartyOwner partyOwner) {
-        return  partyOwnerRepository.save(partyOwner);
-    }*/
 
 }
