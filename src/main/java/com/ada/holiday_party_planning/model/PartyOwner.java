@@ -1,7 +1,10 @@
 package com.ada.holiday_party_planning.model;
 
 import jakarta.persistence.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -23,6 +26,9 @@ public class PartyOwner {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "partyOwner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Event> events = new ArrayList<>();
+
     public PartyOwner() {
 
     }
@@ -30,7 +36,7 @@ public class PartyOwner {
     public PartyOwner(String name, String email, String password) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        setPassword(password);
     }
 
     public UUID getOwnerId() {
@@ -58,7 +64,22 @@ public class PartyOwner {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public List<Event> getAllEvents() {
+        return this.events;
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+        event.setOwner(this);
+    }
+
+    public void removeEvent(Event event) {
+        events.remove(event);
+        event.setOwner(null);
     }
 
     @Override

@@ -68,6 +68,10 @@ public class Item {
         this.value = value;
     }
 
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public UUID getEventId() {
         return eventId;
     }
