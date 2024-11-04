@@ -33,22 +33,15 @@ public class EventService {
         return eventRepository.save(event);
     }
 
-    public List<Event> listAllEvent () {
+    public List<Event> listAllEvent() {
         return eventRepository.findAll();
     }
 
     public List<Event> eventsByPartyOwner(UUID ownerID) {
-        List<Event> allEvents = listAllEvent();
-        allEvents.removeIf(event -> !ownerID.equals(event.getOwner().getOwnerId()));
-        return allEvents;
+        return eventRepository.findByOwnerOwnerId(ownerID);
     }
 
-    public void deleteEvent (UUID eventID) {
+    public void deleteEvent(UUID eventID) {
         eventRepository.deleteById(eventID);
     }
-
-
-
-
-
 }
