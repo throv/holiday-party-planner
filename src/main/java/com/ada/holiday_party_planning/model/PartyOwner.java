@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity(name = "party_owner")
+@Entity
 @Table(name = "party_owner")
 public class PartyOwner {
 
