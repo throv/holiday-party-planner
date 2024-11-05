@@ -69,9 +69,9 @@ public class PartyOwner {
         this.password = passwordEncoder.encode(password);
     }
 
-    /*public List<Event> getAllEvents() {
+    public List<Event> getAllEvents() {
         return this.events;
-    }*/
+    }
 
     public void addEvent(Event event) {
         events.add(event);

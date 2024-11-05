@@ -1,9 +1,7 @@
 package com.ada.holiday_party_planning.model;
 
 import com.ada.holiday_party_planning.enums.GuestStatusEnum;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,12 +17,16 @@ public class Event {
     @Column(name = "event_id")
     private UUID eventId;
 
+    @Column(name = "theme")
     private String theme;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "local_date")
     private LocalDateTime date;
 
+    @Column(name = "place")
     private String place;
 
     @ManyToOne
