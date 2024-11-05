@@ -63,7 +63,7 @@ public class Guest {
     }
 
     public void setStatus(GuestStatusEnum status) {
-        status = status;
+        this.status = status;
     }
 
     public Event getEvent() {
