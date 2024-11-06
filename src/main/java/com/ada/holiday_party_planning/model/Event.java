@@ -1,6 +1,7 @@
 package com.ada.holiday_party_planning.model;
 
 import com.ada.holiday_party_planning.enums.GuestStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,16 +17,21 @@ public class Event {
     @Column(name = "event_id")
     private UUID eventId;
 
+    @Column(name = "theme")
     private String theme;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "local_date")
     private LocalDateTime date;
 
+    @Column(name = "place")
     private String place;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "owner_id", nullable = false)
+    @JsonIgnore
     private PartyOwner partyOwner;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
@@ -80,6 +86,7 @@ public class Event {
     public void setPlace(String place) {
         this.place = place;
     }
+
 
     public PartyOwner getOwner() {
         return partyOwner;
