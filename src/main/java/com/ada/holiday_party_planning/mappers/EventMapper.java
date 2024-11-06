@@ -1,9 +1,6 @@
 package com.ada.holiday_party_planning.mappers;
 
-import com.ada.holiday_party_planning.dto.CreateEventDTO;
-import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
+import com.ada.holiday_party_planning.dto.*;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.PartyOwner;
 import com.ada.holiday_party_planning.repository.EventRepository;
@@ -30,7 +27,9 @@ public class EventMapper {
         return new EventWithPartyOwnerDTO(
                 event.getEventId(), event.getTheme(),
                 event.getTitle(), event.getDate(),
-                event.getPlace(),
+                event.getPlace(), event.getDescription(),
+                event.getDescriptionTranslateFun(), event.getFunActivate(),
+                event.getCategoryFun(),
                 new PartyOwnerDTO(partyOwner.getOwnerId(),
                         partyOwner.getName(), partyOwner.getEmail())
         );
@@ -48,11 +47,11 @@ public class EventMapper {
 
         for (Event event : allEvents) {
             allEventsDTO.add(new EventWithPartyOwnerDTO(
-                    event.getEventId(),
-                    event.getTheme(),
-                    event.getTitle(),
-                    event.getDate(),
-                    event.getPlace(),
+                    event.getEventId(), event.getTheme(),
+                    event.getTitle(), event.getDate(),
+                    event.getPlace(), event.getDescription(),
+                    event.getDescriptionTranslateFun(), event.getFunActivate(),
+                    event.getCategoryFun(),
                     partyOwnerDTO
             ));
         }
@@ -61,19 +60,22 @@ public class EventMapper {
     }
 
     //LISTA TODOS EVENTOS DE UM UNICO USARIO
-    public List<EventWithPartyOwnerDTO> eventListDTO(UUID ownerID) {
+    public List<EventDTO> eventListDTO (UUID ownerID) {
         List<Event> allEvents = eventRepository.findAll();
-        List<EventWithPartyOwnerDTO> allEventsDTO = new ArrayList<>();
+        List<EventDTO> allEventsDTO = new ArrayList<>();
         allEvents.removeIf(event -> !ownerID.equals(event.getOwner().getOwnerId()));
 
         for (Event event : allEvents) {
-            allEventsDTO.add(new EventWithPartyOwnerDTO(
-                    event.getEventId(),
-                    event.getTheme(),
-                    event.getTitle(),
-                    event.getDate(),
-                    event.getPlace()));
+            allEventsDTO.add(new EventDTO(
+                    event.getEventId(), event.getTheme(),
+                    event.getTitle(), event.getDate(),
+                    event.getPlace(), event.getDescription(),
+                    event.getDescriptionTranslateFun(),
+                    event.getFunActivate(),
+                    event.getCategoryFun())
+            );
         }
+
         return allEventsDTO;
     }
 
@@ -89,19 +91,23 @@ public class EventMapper {
 
         return new CreateEventDTO(
                 event.getTheme(),
-                event.getTitle(),
-                event.getDate(),
-                event.getPlace(),
+                event.getTitle(), event.getDate(),
+                event.getPlace(), event.getDescription(),
+                event.getFunActivate(),
+                event.getCategoryFun(),
                 partyOwnerDTO
         );
     }
 
     public Event createDTOToModel(CreateEventDTO createEventDTO, PartyOwner partyOwner) {
-        return new Event(
+        return new Event (
                 createEventDTO.getTheme(),
                 createEventDTO.getTitle(),
                 createEventDTO.getDate(),
                 createEventDTO.getPlace(),
+                createEventDTO.getDescription(),
+                createEventDTO.getFunActivate(),
+                createEventDTO.getCategoryFun(),
                 partyOwner
         );
     }

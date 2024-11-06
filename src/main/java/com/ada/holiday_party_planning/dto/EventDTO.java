@@ -3,7 +3,7 @@ package com.ada.holiday_party_planning.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class EventWithPartyOwnerDTO {
+public class EventDTO {
 
     private final UUID eventID;
     private String theme;
@@ -16,12 +16,11 @@ public class EventWithPartyOwnerDTO {
     private String categoryFun;
     private PartyOwnerDTO partyOwnerDTO;
 
-    public EventWithPartyOwnerDTO(UUID eventiD, String theme,
+    public EventDTO(UUID eventiD, String theme,
                                   String title, LocalDateTime date,
                                   String place, String description,
                                   String descriptionTranslateFun,
-                                  Boolean funActivate, String categoryFun,
-                                  PartyOwnerDTO partyOwnerDTO) {
+                                  Boolean funActivate, String categoryFun) {
         this.eventID = eventiD;
         this.theme = theme;
         this.title = title;
@@ -31,7 +30,6 @@ public class EventWithPartyOwnerDTO {
         this.descriptionTranslateFun = descriptionTranslateFun;
         this.funActivate = funActivate;
         this.categoryFun = categoryFun;
-        this.partyOwnerDTO = partyOwnerDTO;
     }
 
     public UUID getEventID() {
@@ -68,14 +66,6 @@ public class EventWithPartyOwnerDTO {
 
     public void setPlace(String place) {
         this.place = place;
-    }
-
-    public PartyOwnerDTO getPartyOwnerDTO() {
-        return partyOwnerDTO;
-    }
-
-    public void setPartyOwnerDTO(PartyOwnerDTO partyOwnerDTO) {
-        this.partyOwnerDTO = partyOwnerDTO;
     }
 
     public String getDescription() {
