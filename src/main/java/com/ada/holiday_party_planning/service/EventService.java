@@ -1,5 +1,6 @@
 package com.ada.holiday_party_planning.service;
 
+import com.ada.holiday_party_planning.exceptions.PartyOwnerNotFoundException;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.PartyOwner;
 import com.ada.holiday_party_planning.repository.EventRepository;
@@ -24,7 +25,7 @@ public class EventService {
 
     public Event createEvent(UUID ownerId, Event event) {
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
+                .orElseThrow(PartyOwnerNotFoundException::new);
         event.setOwner(partyOwner);
         return eventRepository.save(event);
     }
