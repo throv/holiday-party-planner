@@ -7,14 +7,22 @@ public class CreateEventDTO {
         private String title;
         private LocalDateTime date;
         private String place;
+        private String description;
+        private Boolean funActivate;
+        private String categoryFun;
         private PartyOwnerDTO partyOwnerDTO;
 
     public CreateEventDTO(String theme, String title, LocalDateTime date,
-                          String place, PartyOwnerDTO partyOwnerDTO) {
+                          String place, String description,
+                          Boolean funActivate, String categoryFun,
+                          PartyOwnerDTO partyOwnerDTO) {
         this.theme = theme;
         this.title = title;
         this.date = date;
         this.place = place;
+        this.description = description;
+        this.funActivate = funActivate;
+        this.categoryFun = categoryFun;
         this.partyOwnerDTO = partyOwnerDTO;
     }
 
@@ -56,6 +64,30 @@ public class CreateEventDTO {
 
     public void setPartyOwnerDTO(PartyOwnerDTO partyOwnerDTO) {
         this.partyOwnerDTO = partyOwnerDTO;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getFunActivate() {
+        return funActivate;
+    }
+
+    public void setFunActivate(Boolean funActivate) {
+        this.funActivate = funActivate;
+    }
+
+    public String getCategoryFun() {
+        return categoryFun;
+    }
+
+    public void setCategoryFun(String categoryFun) {
+        this.categoryFun = categoryFun;
     }
 }
 

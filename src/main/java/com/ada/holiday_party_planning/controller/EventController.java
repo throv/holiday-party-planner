@@ -28,7 +28,7 @@ public class EventController {
         return ResponseEntity.ok(events);
     }
 
-    @GetMapping("/{ownerId}/listevent")
+    @GetMapping("/{ownerId}/list")
     public ResponseEntity<List<EventWithPartyOwnerDTO>> findByEventOwner(@PathVariable UUID ownerId) {
         List<EventWithPartyOwnerDTO> events = eventService.eventsByPartyOwner(ownerId);
         return ResponseEntity.ok(events);
