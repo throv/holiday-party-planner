@@ -30,7 +30,9 @@ public class EventMapper {
         return new EventWithPartyOwnerDTO(
                 event.getEventId(), event.getTheme(),
                 event.getTitle(), event.getDate(),
-                event.getPlace(),
+                event.getPlace(), event.getDescription(),
+                event.getDescriptionTranslateFun(), event.getFunActivate(),
+                event.getCategoryFun(),
                 new PartyOwnerDTO(partyOwner.getOwnerId(),
                         partyOwner.getName(), partyOwner.getEmail())
         );
@@ -48,11 +50,11 @@ public class EventMapper {
 
         for (Event event : allEvents) {
             allEventsDTO.add(new EventWithPartyOwnerDTO(
-                    event.getEventId(),
-                    event.getTheme(),
-                    event.getTitle(),
-                    event.getDate(),
-                    event.getPlace(),
+                    event.getEventId(), event.getTheme(),
+                    event.getTitle(), event.getDate(),
+                    event.getPlace(), event.getDescription(),
+                    event.getDescriptionTranslateFun(), event.getFunActivate(),
+                    event.getCategoryFun(),
                     partyOwnerDTO
             ));
         }
@@ -68,11 +70,11 @@ public class EventMapper {
 
         for (Event event : allEvents) {
             allEventsDTO.add(new EventWithPartyOwnerDTO(
-                    event.getEventId(),
-                    event.getTheme(),
-                    event.getTitle(),
-                    event.getDate(),
-                    event.getPlace()));
+                    event.getEventId(), event.getTheme(),
+                    event.getTitle(), event.getDate(),
+                    event.getPlace(), event.getDescription(),
+                    event.getDescriptionTranslateFun(), event.getFunActivate(),
+                    event.getCategoryFun()));
         }
         return allEventsDTO;
     }
@@ -89,19 +91,23 @@ public class EventMapper {
 
         return new CreateEventDTO(
                 event.getTheme(),
-                event.getTitle(),
-                event.getDate(),
-                event.getPlace(),
+                event.getTitle(), event.getDate(),
+                event.getPlace(), event.getDescription(),
+                event.getFunActivate(),
+                event.getCategoryFun(),
                 partyOwnerDTO
         );
     }
 
     public Event createDTOToModel(CreateEventDTO createEventDTO, PartyOwner partyOwner) {
-        return new Event(
+        return new Event (
                 createEventDTO.getTheme(),
                 createEventDTO.getTitle(),
                 createEventDTO.getDate(),
                 createEventDTO.getPlace(),
+                createEventDTO.getDescription(),
+                createEventDTO.getFunActivate(),
+                createEventDTO.getCategoryFun(),
                 partyOwner
         );
     }

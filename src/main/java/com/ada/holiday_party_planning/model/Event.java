@@ -17,17 +17,22 @@ public class Event {
     @Column(name = "event_id")
     private UUID eventId;
 
-    @Column(name = "theme")
     private String theme;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "local_date")
     private LocalDateTime date;
 
-    @Column(name = "place")
     private String place;
+
+    private String description;
+
+    @Column(name = "description_translate_fun")
+    private String descriptionTranslateFun = "TESTE";
+
+    private Boolean funActivate;
+
+    private String categoryFun;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "owner_id", nullable = false)
@@ -40,16 +45,22 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Item> items;
 
-    public Event() {
-    }
+    public Event() {}
 
-    public Event(String theme, String title, LocalDateTime date, String place, PartyOwner partyOwner) {
+    public Event (String theme, String title, LocalDateTime date,
+                  String place, String description,
+                  Boolean funActivate, String categoryFun, PartyOwner partyOwner) {
         this.theme = theme;
         this.title = title;
         this.date = date;
         this.place = place;
+        this.description = description;
+        this.funActivate = funActivate;
+        this.categoryFun = categoryFun;
         this.partyOwner = partyOwner;
+
     }
+
 
     public UUID getEventId() {
         return eventId;
@@ -87,13 +98,44 @@ public class Event {
         this.place = place;
     }
 
-
     public PartyOwner getOwner() {
         return partyOwner;
     }
 
     public void setOwner(PartyOwner partyOwner) {
         this.partyOwner = partyOwner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescriptionTranslateFun() {
+        return descriptionTranslateFun;
+    }
+
+    public void setDescriptionTranslateFun(String descriptionTranslateFun) {
+        this.descriptionTranslateFun = descriptionTranslateFun;
+    }
+
+    public Boolean getFunActivate() {
+        return funActivate;
+    }
+
+    public void setFunActivate(Boolean funActivate) {
+        this.funActivate = funActivate;
+    }
+
+    public String getCategoryFun() {
+        return categoryFun;
+    }
+
+    public void setCategoryFun(String categoryFun) {
+        this.categoryFun = categoryFun;
     }
 
     public void addGuest(Guest guest) {

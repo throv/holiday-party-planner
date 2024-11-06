@@ -8,9 +8,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class APIFunTranlation {
-    private String endPoint = "https://api.funtranslations.com/translate/";
 
-    public String tranlateFun (String message, String category) {
+    public static String tranlateFun (String message, String category) {
+        String endPoint = "https://api.funtranslations.com/translate/";
         endPoint  += category + ".json";
 
         try {

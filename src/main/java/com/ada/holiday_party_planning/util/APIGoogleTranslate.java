@@ -8,13 +8,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.PublicKey;
 
 public class APIGoogleTranslate {
 
-    private String apiKey = System.getenv("GOOGLE_API_KEY");
-    private String endPoint = "https://translation.googleapis.com/language/translate/v2?key=" + apiKey;
-
-    public String translateMensage(String message, String sourceLang, String targetLang) {
+    public static String translateMensage(String message, String sourceLang, String targetLang) {
+        String apiKey = System.getenv("GOOGLE_API_KEY");
+        String endPoint = "https://translation.googleapis.com/language/translate/v2?key=" + apiKey;
+        System.out.println(endPoint);
 
         try {
             URL url = new URL(endPoint);

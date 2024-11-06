@@ -34,7 +34,6 @@ public class PartyOwnerController {
     @PostMapping("/login")
     public ResponseEntity<PartyOwnerDTO> login(@RequestBody PartyOwnerLoginDTO partyOwnerLoginDTO) {
         PartyOwnerDTO partyOwnerDTO = partyOwnerService.login(partyOwnerLoginDTO);
-
         return ResponseEntity
                 .status(200)
                 .body(partyOwnerDTO);
