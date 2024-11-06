@@ -3,6 +3,7 @@ package com.ada.holiday_party_planning.controller;
 import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerLoginDTO;
+import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
 import com.ada.holiday_party_planning.service.PartyOwnerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,23 +33,18 @@ public class PartyOwnerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<PartyOwnerDTO> login(@RequestBody PartyOwnerLoginDTO partyOwnerLoginDTO) {
-        PartyOwnerDTO partyOwnerDTO = partyOwnerService.login(partyOwnerLoginDTO);
+    public ResponseEntity<PartyOwnerLoginResponseDTO> login(@RequestBody PartyOwnerLoginDTO partyOwnerLoginDTO) {
+        PartyOwnerLoginResponseDTO partyOwnerLoginResponseDTO = partyOwnerService.login(partyOwnerLoginDTO);
+
         return ResponseEntity
-                .status(200)
-                .body(partyOwnerDTO);
+                .ok(partyOwnerLoginResponseDTO);
     }
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllPartyOwners() {
-        List<PartyOwnerDTO> allPartyOwners = partyOwnerService.getAllPartyOwners();
+    public ResponseEntity<List<PartyOwnerDTO>> getAllPartyOwners() {
 
-        if(allPartyOwners.isEmpty()) {
-            return ResponseEntity
-                    .status(404)
-                    .body("Message: No information found!");
-        }
+        List<PartyOwnerDTO> allPartyOwners = partyOwnerService.getAllPartyOwners();
 
         return ResponseEntity.ok(allPartyOwners);
     }

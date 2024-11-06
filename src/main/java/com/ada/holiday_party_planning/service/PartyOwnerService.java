@@ -3,6 +3,10 @@ package com.ada.holiday_party_planning.service;
 import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerLoginDTO;
+import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
+import com.ada.holiday_party_planning.exceptions.EmailAlreadyExistsException;
+import com.ada.holiday_party_planning.exceptions.InvalidCredentialsException;
+import com.ada.holiday_party_planning.exceptions.PartyOwnerNotFoundException;
 import com.ada.holiday_party_planning.mappers.PartyOwnerMapper;
 import com.ada.holiday_party_planning.model.PartyOwner;
 import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
@@ -30,10 +34,16 @@ public class PartyOwnerService {
         Optional<PartyOwner> existingPartyOwner = partyOwnerRepository.findByEmail(createPartyOwnerDTO.getEmail());
 
         if(existingPartyOwner.isPresent()) {
-            throw new IllegalArgumentException("Email is already in use!");
+            throw new EmailAlreadyExistsException();
         }
 
         PartyOwner partyOwnerCreated = PartyOwnerMapper.createDTOToModel(createPartyOwnerDTO);
+        partyOwnerCreated.setPassword(
+                passwordEncoder
+                        .encode(
+                        createPartyOwnerDTO
+                                .getPassword()
+                ));
 
         partyOwnerRepository.save(partyOwnerCreated);
 
@@ -41,24 +51,26 @@ public class PartyOwnerService {
 
     }
 
-    public PartyOwnerDTO login(PartyOwnerLoginDTO userLoginInfo) {
+    public PartyOwnerLoginResponseDTO login(PartyOwnerLoginDTO userLoginInfo) {
         Optional<PartyOwner> existingPartyOwner = partyOwnerRepository.findByEmail(userLoginInfo.getEmail());
 
         if(existingPartyOwner.isEmpty()) {
-            throw new IllegalArgumentException("Email or password is not valid.");
+            throw new PartyOwnerNotFoundException();
         }
 
         PartyOwner partyOwner = existingPartyOwner.get();
 
         if(!passwordEncoder.matches(userLoginInfo.getPassword(), partyOwner.getPassword())) {
-            throw new IllegalArgumentException("Email or password is not valid.");
+            throw new InvalidCredentialsException();
         }
 
-        return PartyOwnerMapper.toDTO(partyOwner);
+        return PartyOwnerMapper.toLoginResponseDTO(partyOwner);
     }
 
     public List<PartyOwnerDTO> getAllPartyOwners() {
         List<PartyOwner> partyOwnersList = partyOwnerRepository.findAll();
+
+        if(partyOwnersList.isEmpty()) throw new PartyOwnerNotFoundException();
 
         return PartyOwnerMapper.toDTOList(partyOwnersList);
     }

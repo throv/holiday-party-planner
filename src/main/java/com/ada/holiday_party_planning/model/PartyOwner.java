@@ -2,7 +2,6 @@ package com.ada.holiday_party_planning.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class PartyOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "owner_Id", nullable = false)
+    @Column(name = "owner_id", nullable = false)
     private UUID ownerId;
 
     @Column(name = "name", nullable = false)
@@ -65,8 +64,7 @@ public class PartyOwner {
     }
 
     public void setPassword(String password) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(password);
+        this.password = password;
     }
 
     /*public List<Event> getAllEvents() {
