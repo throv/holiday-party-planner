@@ -2,6 +2,7 @@ package com.ada.holiday_party_planning.mappers;
 
 import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
+import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
 import com.ada.holiday_party_planning.model.PartyOwner;
 
 import java.util.List;
@@ -39,6 +40,14 @@ public class PartyOwnerMapper {
                 partyOwnerDTO.getName(),
                 partyOwnerDTO.getEmail(),
                 null
+        );
+    }
+
+    public static PartyOwnerLoginResponseDTO toLoginResponseDTO(PartyOwner partyOwner) {
+
+        return new PartyOwnerLoginResponseDTO(
+                partyOwner.getName(),
+                partyOwner.getEmail()
         );
     }
 

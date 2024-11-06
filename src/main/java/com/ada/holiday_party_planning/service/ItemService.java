@@ -1,5 +1,6 @@
 package com.ada.holiday_party_planning.service;
 
+import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Item;
 import com.ada.holiday_party_planning.model.PartyOwner;
@@ -27,14 +28,14 @@ public class ItemService {
 
     public Item createItem(Item item, UUID eventId){
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+                .orElseThrow(EventNotFoundException::new);
         item.setEvent(event);
         return itemRepository.save(item);
     }
 
     public Item updateItem(Item item, UUID eventId){
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+                .orElseThrow(EventNotFoundException::new);
         item.setEvent(event);
         return itemRepository.save(item);
     }
