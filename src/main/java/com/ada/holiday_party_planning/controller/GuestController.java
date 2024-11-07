@@ -2,6 +2,8 @@ package com.ada.holiday_party_planning.controller;
 
 import com.ada.holiday_party_planning.dto.CreateGuestDTO;
 import com.ada.holiday_party_planning.dto.GuestDTO;
+import com.ada.holiday_party_planning.mappers.GuestMapper;
+import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -46,8 +48,8 @@ public class GuestController {
     @PostMapping("/register")
     public ResponseEntity<GuestDTO> createGuest(@RequestBody CreateGuestDTO createGuestDTO) {
 
-        GuestDTO guestDTO = guestService.createGuest(createGuestDTO);
-
+        Guest guest = guestService.createGuest(createGuestDTO);
+        GuestDTO guestDTO = GuestMapper.toDTO(guest);
         return ResponseEntity.status(201).body(guestDTO);
     }
 
@@ -64,7 +66,9 @@ public class GuestController {
     }
 
     @DeleteMapping("/delete/{guestId}")
-    public void deleteGuest(@PathVariable UUID guestId) {
+    public ResponseEntity<String> deleteGuest(@PathVariable UUID guestId) {
+
         guestService.deleteGuest(guestId);
+        return ResponseEntity.status(204).body("Message: Guest deleted successfully!");
     }
 }

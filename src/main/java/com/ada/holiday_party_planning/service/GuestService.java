@@ -3,10 +3,13 @@ package com.ada.holiday_party_planning.service;
 import com.ada.holiday_party_planning.dto.CreateGuestDTO;
 import com.ada.holiday_party_planning.dto.GuestDTO;
 import com.ada.holiday_party_planning.mappers.GuestMapper;
+import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
+import com.ada.holiday_party_planning.repository.EventRepository;
 import com.ada.holiday_party_planning.repository.GuestRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -16,10 +19,12 @@ import java.util.UUID;
 @Service
 public class GuestService {
 
-    private GuestRepository guestRepository;
+    private final GuestRepository guestRepository;
+    private final EventRepository eventRepository;
 
-    public GuestService(GuestRepository guestRepository) {
+    public GuestService(GuestRepository guestRepository, EventRepository eventRepository) {
         this.guestRepository = guestRepository;
+        this.eventRepository = eventRepository;
     }
 
     public List<GuestDTO> getAllGuests() {
@@ -35,7 +40,8 @@ public class GuestService {
         return guest.map(GuestMapper::toDTO);
     }
 
-    public GuestDTO createGuest(CreateGuestDTO guest) {
+    @Transactional
+    public Guest createGuest(CreateGuestDTO guest) {
 
         Optional<Guest> existingGuest = guestRepository.findByEmail(guest.getEmail());
 
@@ -43,13 +49,18 @@ public class GuestService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use!");
         }
 
+        Event event = guest.getEvent();
+
+        if (event != null && event.getEventId() == null) {
+            event = eventRepository.save(event);
+            guest.setEvent(event);
+        }
+
         Guest guestCreated = GuestMapper.createDTOToModel(guest);
 
         guestCreated.setConfirmed(guest.isConfirmed());
 
-        guestRepository.save(guestCreated);
-
-        return GuestMapper.toDTO(guestCreated);
+        return guestRepository.save(guestCreated);
     }
 
     public Optional<GuestDTO> updateGuest(UUID guestId, GuestDTO newGuestDTO) {
