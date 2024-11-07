@@ -46,7 +46,7 @@ public class GuestService {
         Optional<Guest> existingGuest = guestRepository.findByEmail(guest.getEmail());
 
         if(existingGuest.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use!");
+            throw new EmailAlreadyExistsException("Email is already in use!");
         }
 
         Event event = guest.getEvent();
@@ -81,7 +81,7 @@ public class GuestService {
 
     public void deleteGuest(UUID guestId) {
         Guest guest = guestRepository.findById(guestId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Guest not found."));
+                .orElseThrow(() -> new GuestNotFoundException());
 
         guestRepository.delete(guest);
     }
