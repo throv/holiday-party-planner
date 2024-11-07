@@ -1,3 +1,33 @@
+# Holiday Party Planner
+
+## Descrição
+
+"Holiday Party Planner" é uma aplicação que oferece uma interface web (SPRING) responsável pelo planejamento e organização de festas de fim de ano. Projeto desenvolvido em JAVA e SPRING, utilizando bibliotecas externas para a administração de bancos de dados.
+
+## Tecnologias Utilizadas
+
+- **Java**: Linguagem de programação principal utilizada para desenvolver a lógica do sistema.
+
+- **Spring Framework**: Ecossistema de desenvolvimento para facilitar a criação de aplicações Java utilizando diversos módulos independentes.
+
+- **PostgreSQL**: Banco de dados robusto para melhor gerenciamento de grandes quantidades de dados.
+
+## Regras de Negócio
+
+- **RN1**: Persistência em banco de dados (H2 ou Postgres);
+- **RN2**: Configuração de Segurança: Controle de rota e login (jwt opcional);
+- **RN3**: Consumo de uma API externa pública;
+- **RN4**: Swagger opcional;
+- **RN5**: Frontend opcional.
+- **Objetivo**:
+    - Criar uma API REST contendo os itens acima citados.
+
+## Instalação
+### Pré-Requisitos
+- Java Development Kit (JDK) instalado.
+- IDE (como IntelliJ IDEA) configurada para desenvolvimento em Java.
+- PostgresSQL instalado e configurado.
+
 ## Projeto desenvolvido por:
 
 [<img alt="Alan Filho" height="75px" src="https://avatars.githubusercontent.com/u/125782386?v=4" width="75px"/>](https://github.com/oalleeN)
