@@ -5,6 +5,12 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
+/**
+ * Representa um convidado de um evento, contendo informações sobre o nome, email,
+ * status do convite (confirmado ou não) e a relação com o evento ao qual o convidado pertence.
+ * A classe também mantém a confirmação do convite, indicando se o convidado aceitou o convite.
+ */
+
 @Entity
 @Table(name = "guests")
 public class Guest {
@@ -31,7 +37,22 @@ public class Guest {
     @Column(name = "is_confirmed", nullable = false)
     private boolean isConfirmed;
 
+    /**
+     * Construtor padrão.
+     */
+
     public Guest() {}
+
+    /**
+     * Construtor para criar um convidado com informações específicas.
+     *
+     * @param guestId ID único do convidado.
+     * @param status Status do convidado (confirmado ou não).
+     * @param email E-mail do convidado.
+     * @param name Nome do convidado.
+     * @param event Evento ao qual o convidado pertence.
+     * @param isConfirmed Indica se o convidado confirmou sua presença.
+     */
 
     public Guest(UUID guestId, GuestStatusEnum status, String email, String name, Event event, boolean isConfirmed) {
         this.guestId = guestId;
@@ -42,6 +63,8 @@ public class Guest {
         this.isConfirmed = isConfirmed;
 
     }
+
+    // Getters e Setters
 
     public UUID getGuestId() {
         return guestId;

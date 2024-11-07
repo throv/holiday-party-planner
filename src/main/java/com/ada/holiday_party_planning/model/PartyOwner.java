@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Representa o proprietário de uma festa (Party Owner), contendo informações como nome, e-mail, senha e os eventos
+ * associados a este proprietário. Essa classe gerencia os dados do organizador de festas e os eventos que ele criou.
+ */
+
 @Entity
 @Table(name = "party_owner")
 public class PartyOwner {
@@ -29,15 +34,27 @@ public class PartyOwner {
     @OneToMany(mappedBy = "partyOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Event> events = new ArrayList<>();
 
-    public PartyOwner() {
+    /**
+     * Construtor padrão.
+     */
 
-    }
+    public PartyOwner() {}
+
+    /**
+     * Construtor para criar um novo proprietário de festa com dados específicos.
+     *
+     * @param name Nome do proprietário da festa.
+     * @param email E-mail do proprietário da festa.
+     * @param password Senha do proprietário da festa.
+     */
 
     public PartyOwner(String name, String email, String password) {
         this.name = name;
         this.email = email;
         setPassword(password);
     }
+
+    // Getters e Setters
 
     public UUID getOwnerId() {
         return ownerId;
@@ -71,15 +88,34 @@ public class PartyOwner {
         return this.events;
     }*/
 
+    /**
+     * Adiciona um evento à lista de eventos do proprietário da festa e define o proprietário para o evento.
+     *
+     * @param event O evento a ser adicionado.
+     */
+
     public void addEvent(Event event) {
         events.add(event);
         event.setOwner(this);
     }
 
+    /**
+     * Remove um evento da lista de eventos do proprietário da festa e limpa o relacionamento do evento.
+     *
+     * @param event O evento a ser removido.
+     */
+
     public void removeEvent(Event event) {
         events.remove(event);
         event.setOwner(null);
     }
+
+    /**
+     * Compara se dois objetos PartyOwner são iguais com base no ID único.
+     *
+     * @param o O objeto a ser comparado.
+     * @return true se os objetos são iguais, false caso contrário.
+     */
 
     @Override
     public boolean equals(Object o) {
@@ -88,6 +124,12 @@ public class PartyOwner {
         PartyOwner that = (PartyOwner) o;
         return Objects.equals(ownerId, that.ownerId);
     }
+
+    /**
+     * Gera o código hash baseado no ID do proprietário.
+     *
+     * @return O código hash para o proprietário da festa.
+     */
 
     @Override
     public int hashCode() {

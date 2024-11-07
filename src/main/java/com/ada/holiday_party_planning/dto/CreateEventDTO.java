@@ -2,6 +2,12 @@ package com.ada.holiday_party_planning.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO para criação de eventos.
+ * Armazena as informações necessárias para criar um novo evento, incluindo tema, título, data, local, descrição,
+ * opções de entretenimento e informações do proprietário da festa.
+ */
+
 public class CreateEventDTO {
         private String theme;
         private String title;
@@ -11,6 +17,19 @@ public class CreateEventDTO {
         private Boolean funActivate;
         private String categoryFun;
         private PartyOwnerDTO partyOwnerDTO;
+
+    /**
+     * Construtor da classe CreateEventDTO.
+     *
+     * @param theme Tema do evento.
+     * @param title Título do evento.
+     * @param date Data e hora do evento.
+     * @param place Local onde o evento ocorrerá.
+     * @param description Descrição do evento.
+     * @param funActivate Indica se haverá entretenimento no evento.
+     * @param categoryFun Categoria do entretenimento, se ativado.
+     * @param partyOwnerDTO Dados do proprietário do evento.
+     */
 
     public CreateEventDTO(String theme, String title, LocalDateTime date,
                           String place, String description,
@@ -25,6 +44,8 @@ public class CreateEventDTO {
         this.categoryFun = categoryFun;
         this.partyOwnerDTO = partyOwnerDTO;
     }
+
+    // Getters e setters
 
     public String getTheme() {
         return theme;

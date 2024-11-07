@@ -10,7 +10,30 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.PublicKey;
 
+/**
+ * Utilitário para tradução de mensagens usando a API Google Translate.
+ *
+ * Esta classe permite traduzir uma mensagem de um idioma de origem para um idioma de destino
+ * utilizando a API Google Translate. O método `translateMensage` envia uma solicitação POST
+ * para a API, especificando a mensagem, o idioma de origem e o idioma de destino.
+ *
+ * A tradução retornada pela API é extraída e retornada como o texto traduzido.
+ */
+
 public class APIGoogleTranslate {
+
+    /**
+     * Traduz uma mensagem usando a API Google Translate.
+     *
+     * Esse método envia uma solicitação POST para a API Google Translate, especificando a mensagem
+     * a ser traduzida, o idioma de origem e o idioma de destino. O texto traduzido é retornado como
+     * resposta. Em caso de erro, o método imprime o código de erro da resposta.
+     *
+     * @param message O texto a ser traduzido.
+     * @param sourceLang O código do idioma de origem (ex: "en" para inglês).
+     * @param targetLang O código do idioma de destino (ex: "es" para espanhol).
+     * @return O texto traduzido se a solicitação for bem-sucedida, ou `null` em caso de erro.
+     */
 
     public static String translateMensage(String message, String sourceLang, String targetLang) {
         String apiKey = System.getenv("GOOGLE_API_KEY");
