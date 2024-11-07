@@ -1,9 +1,6 @@
 package com.ada.holiday_party_planning.controller;
 
-import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerLoginDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
+import com.ada.holiday_party_planning.dto.*;
 import com.ada.holiday_party_planning.service.PartyOwnerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
