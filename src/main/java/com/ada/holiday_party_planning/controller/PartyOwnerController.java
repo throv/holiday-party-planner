@@ -1,10 +1,6 @@
 package com.ada.holiday_party_planning.controller;
 
-import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerLoginDTO;
-import com.ada.holiday_party_planning.service.EmailService;
-import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
+import com.ada.holiday_party_planning.dto.*;
 import com.ada.holiday_party_planning.service.PartyOwnerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +14,9 @@ import java.util.UUID;
 public class PartyOwnerController {
 
     private final PartyOwnerService partyOwnerService;
-    private final EmailService emailService;
 
-    public PartyOwnerController(PartyOwnerService partyOwnerService, EmailService emailService) {
+    public PartyOwnerController(PartyOwnerService partyOwnerService) {
         this.partyOwnerService = partyOwnerService;
-        this.emailService = emailService;
     }
 
     @PostMapping ("/register")
@@ -62,13 +56,6 @@ public class PartyOwnerController {
         } else {
             return ResponseEntity.ok(newPartyOwner.get());
         }
-    }
-
-    @PostMapping("{ownerId}/send-email")
-    public ResponseEntity<String> sendEventLinkEmail(@PathVariable UUID ownerId, @RequestBody PartyOwnerDTO emailResquest) {
-        String eventLink = "http://localhost:8080/event/" + ownerId;
-        emailService.sendMail(emailResquest.getEmail(), "Event Link", eventLink);
-        return ResponseEntity.ok("Email sent successfully!");
     }
 
 }

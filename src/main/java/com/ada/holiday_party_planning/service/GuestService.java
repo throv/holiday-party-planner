@@ -28,8 +28,11 @@ public class GuestService {
         return GuestMapper.toDTOList(allGuest);
     }
 
-    public Optional<Guest> getGuestById(UUID id) {
-        return guestRepository.findById(id);
+    public Optional<GuestDTO> getGuestById(UUID id) {
+
+        Optional<Guest> guest = guestRepository.findById(id);
+
+        return guest.map(GuestMapper::toDTO);
     }
 
     public GuestDTO createGuest(CreateGuestDTO guest) {

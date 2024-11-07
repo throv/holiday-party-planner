@@ -19,6 +19,18 @@ public class GuestController {
     @Autowired
     private GuestService guestService;
 
+    @GetMapping("/{guestId}")
+    public ResponseEntity<GuestDTO> getGuestById(@PathVariable UUID guestId) {
+
+        Optional<GuestDTO> guestDTO = guestService.getGuestById(guestId);
+
+        if (guestDTO.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(guestDTO.get());
+        }
+    }
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllGuests() {
 
