@@ -1,11 +1,9 @@
 package com.ada.holiday_party_planning.controller;
 
-import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
-import com.ada.holiday_party_planning.model.PartyOwner;
+import com.ada.holiday_party_planning.dto.*;
 import com.ada.holiday_party_planning.service.PartyOwnerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,15 +19,29 @@ public class PartyOwnerController {
         this.partyOwnerService = partyOwnerService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllPartyOwners() {
-        List<PartyOwnerDTO> allPartyOwners = partyOwnerService.getAllPartyOwners();
+    @PostMapping ("/register")
+    public ResponseEntity<PartyOwnerDTO> createPartyOwner (@RequestBody CreatePartyOwnerDTO createPartyOwnerDTO) {
 
-        if(allPartyOwners.isEmpty()) {
-            return ResponseEntity
-                    .status(404)
-                    .body("Message: No information found!");
-        }
+        PartyOwnerDTO partyOwnerDTO = partyOwnerService.createPartyOwner(createPartyOwnerDTO);
+
+        return ResponseEntity
+                .status(201)
+                .body(partyOwnerDTO);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<PartyOwnerLoginResponseDTO> login(@RequestBody PartyOwnerLoginDTO partyOwnerLoginDTO) {
+        PartyOwnerLoginResponseDTO partyOwnerLoginResponseDTO = partyOwnerService.login(partyOwnerLoginDTO);
+
+        return ResponseEntity
+                .ok(partyOwnerLoginResponseDTO);
+    }
+
+
+    @GetMapping("/all")
+    public ResponseEntity<List<PartyOwnerDTO>> getAllPartyOwners() {
+
+        List<PartyOwnerDTO> allPartyOwners = partyOwnerService.getAllPartyOwners();
 
         return ResponseEntity.ok(allPartyOwners);
     }
@@ -45,11 +57,5 @@ public class PartyOwnerController {
             return ResponseEntity.ok(newPartyOwner.get());
         }
     }
-
-
-/*    @PostMapping ("/register")
-    public PartyOwner creatPartyOwner (@RequestBody PartyOwner partyOwner) {
-        return  partyOwnerRepository.save(partyOwner);
-    }*/
 
 }

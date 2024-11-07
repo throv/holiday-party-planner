@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
-		<relativePath/> <!-- lookup parent from com.ada.holiday_party_planning.repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.ada</groupId>
 	<artifactId>holiday-party-planning</artifactId>
@@ -67,6 +67,16 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.1.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -77,5 +87,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
