@@ -2,6 +2,8 @@ package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.dto.CreateGuestDTO;
 import com.ada.holiday_party_planning.dto.GuestDTO;
+import com.ada.holiday_party_planning.exceptions.EmailAlreadyExistsException;
+import com.ada.holiday_party_planning.exceptions.GuestNotFoundException;
 import com.ada.holiday_party_planning.mappers.GuestMapper;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
