@@ -1,6 +1,7 @@
 package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
+import com.ada.holiday_party_planning.exceptions.ItemNotFoundException;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Item;
 import com.ada.holiday_party_planning.model.PartyOwner;
@@ -92,7 +93,8 @@ public class ItemService {
      */
 
     public void deleteItem (UUID itemId) {
-        itemRepository.deleteById(itemId);
+        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+        itemRepository.delete(item);
     }
 
 }

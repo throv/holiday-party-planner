@@ -108,4 +108,14 @@ public class CustomResponseExceptionHandler extends ResponseEntityExceptionHandl
                 exception.getMessage()
         );
     }
+
+    @ExceptionHandler(GuestNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> guestNotFoundHandler(GuestNotFoundException exception) {
+
+        return getExceptionResponse(
+                HttpStatus.NOT_FOUND,
+                "GUEST_NOT_FOUND",
+                exception.getMessage()
+        );
+    }
 }

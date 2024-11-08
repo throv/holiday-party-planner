@@ -1,9 +1,8 @@
 package com.ada.holiday_party_planning.controller;
 
-import com.ada.holiday_party_planning.dto.CreateEventDTO;
-import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.UpdateEventDTO;
+import com.ada.holiday_party_planning.dto.*;
 import com.ada.holiday_party_planning.model.Event;
+import com.ada.holiday_party_planning.service.EmailService;
 import com.ada.holiday_party_planning.service.EventService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,7 @@ import java.util.UUID;
 public class EventController {
 
     private final EventService eventService;
+    private final EmailService emailService;
 
     /**
      * Construtor que injeta o serviço de eventos.
@@ -29,8 +29,10 @@ public class EventController {
      * @param eventService Serviço para manipulação de dados de eventos.
      */
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, EmailService emailService) {
+
         this.eventService = eventService;
+        this.emailService = emailService;
     }
 
     /**
@@ -97,6 +99,14 @@ public class EventController {
     public ResponseEntity<Void> deleteEvent(@PathVariable UUID id) {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{eventId}/send-email")
+    public ResponseEntity<String> sendEmail(@PathVariable UUID eventId, @RequestParam String email) {
+
+        String eventLink = "http://localhost:8080/events/" + eventId;
+        emailService.sendEmail(email, "Event Link", eventLink);
+        return ResponseEntity.ok().build();
     }
 
 }

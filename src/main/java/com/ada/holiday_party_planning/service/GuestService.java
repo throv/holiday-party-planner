@@ -2,6 +2,8 @@ package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.dto.CreateGuestDTO;
 import com.ada.holiday_party_planning.dto.GuestDTO;
+import com.ada.holiday_party_planning.exceptions.EmailAlreadyExistsException;
+import com.ada.holiday_party_planning.exceptions.GuestNotFoundException;
 import com.ada.holiday_party_planning.mappers.GuestMapper;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
@@ -81,7 +83,7 @@ public class GuestService {
         Optional<Guest> existingGuest = guestRepository.findByEmail(guest.getEmail());
 
         if(existingGuest.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email is already in use!");
+            throw new EmailAlreadyExistsException("Email is already in use!");
         }
 
         Event event = guest.getEvent();
@@ -131,7 +133,7 @@ public class GuestService {
 
     public void deleteGuest(UUID guestId) {
         Guest guest = guestRepository.findById(guestId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Guest not found."));
+                .orElseThrow(() -> new GuestNotFoundException());
 
         guestRepository.delete(guest);
     }
