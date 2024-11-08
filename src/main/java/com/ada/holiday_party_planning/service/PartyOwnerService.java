@@ -18,16 +18,41 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Serviço para gerenciar os proprietários de festas e suas lógicas de negócios, incluindo operações
+ * para criação de proprietário, login, atualização e listagem de proprietários de festas.
+ *
+ * Este serviço utiliza criptografia de senha com BCrypt para garantir a segurança no armazenamento
+ * e na verificação das credenciais dos proprietários.
+ */
+
 @Service
 public class PartyOwnerService {
 
     private final PartyOwnerRepository partyOwnerRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * Construtor que inicializa o repositório e o codificador de senha.
+     *
+     * @param partyOwnerRepository Repositório para manipulação de proprietários de festas.
+     */
+
     public PartyOwnerService(PartyOwnerRepository partyOwnerRepository) {
         this.partyOwnerRepository = partyOwnerRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
+
+    /**
+     * Cria um novo proprietário de festa.
+     *
+     * Verifica se o e-mail informado já está em uso, lançando uma exceção se já existir um proprietário
+     * com o mesmo e-mail. A senha é criptografada antes de ser armazenada.
+     *
+     * @param createPartyOwnerDTO DTO com as informações para criação de um novo proprietário de festa.
+     * @return O DTO do proprietário de festa criado.
+     * @throws EmailAlreadyExistsException Se o e-mail já estiver em uso.
+     */
 
     public PartyOwnerDTO createPartyOwner(CreatePartyOwnerDTO createPartyOwnerDTO) {
 
@@ -51,6 +76,19 @@ public class PartyOwnerService {
 
     }
 
+    /**
+     * Realiza o login de um proprietário de festa.
+     *
+     * Verifica se o proprietário existe com o e-mail informado e valida se a senha fornecida corresponde
+     * à senha criptografada armazenada no banco. Retorna as informações de login do proprietário caso as credenciais
+     * estejam corretas.
+     *
+     * @param userLoginInfo DTO contendo o e-mail e a senha para o login.
+     * @return O DTO de resposta de login do proprietário.
+     * @throws PartyOwnerNotFoundException Se o proprietário não for encontrado.
+     * @throws InvalidCredentialsException Se as credenciais forem inválidas.
+     */
+
     public PartyOwnerLoginResponseDTO login(PartyOwnerLoginDTO userLoginInfo) {
         Optional<PartyOwner> existingPartyOwner = partyOwnerRepository.findByEmail(userLoginInfo.getEmail());
 
@@ -67,6 +105,13 @@ public class PartyOwnerService {
         return PartyOwnerMapper.toLoginResponseDTO(partyOwner);
     }
 
+    /**
+     * Retorna uma lista de todos os proprietários de festas cadastrados.
+     *
+     * @return Uma lista de DTOs dos proprietários de festas.
+     * @throws PartyOwnerNotFoundException Se não houver nenhum proprietário cadastrado.
+     */
+
     public List<PartyOwnerDTO> getAllPartyOwners() {
         List<PartyOwner> partyOwnersList = partyOwnerRepository.findAll();
 
@@ -74,6 +119,17 @@ public class PartyOwnerService {
 
         return PartyOwnerMapper.toDTOList(partyOwnersList);
     }
+
+    /**
+     * Atualiza as informações de um proprietário de festa.
+     *
+     * Recebe um DTO com as novas informações do proprietário e atualiza os dados no banco. Se o proprietário
+     * não for encontrado, retorna uma opção vazia.
+     *
+     * @param ownerId O ID do proprietário a ser atualizado.
+     * @param newPartyOwner O DTO com as novas informações do proprietário.
+     * @return O DTO do proprietário atualizado, se encontrado.
+     */
 
     public Optional<PartyOwnerDTO> updatePartyOwner(UUID ownerId, PartyOwnerDTO newPartyOwner) {
 

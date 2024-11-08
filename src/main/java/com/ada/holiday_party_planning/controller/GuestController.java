@@ -14,12 +14,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Controlador REST para gerenciar convidados.
+ * Define endpoints para criar, atualizar, listar e excluir convidados.
+ */
+
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
 
     @Autowired
     private GuestService guestService;
+
+    /**
+     * Retorna um convidado específico com base no ID.
+     *
+     * @param guestId ID do convidado.
+     * @return Convidado correspondente ao ID ou 404 caso não encontrado.
+     */
 
     @GetMapping("/{guestId}")
     public ResponseEntity<GuestDTO> getGuestById(@PathVariable UUID guestId) {
@@ -33,6 +45,12 @@ public class GuestController {
         }
     }
 
+    /**
+     * Retorna todos os convidados cadastrados.
+     *
+     * @return Lista de todos os convidados ou mensagem de erro caso não haja dados.
+     */
+
     @GetMapping("/all")
     public ResponseEntity<?> getAllGuests() {
 
@@ -45,6 +63,13 @@ public class GuestController {
         return ResponseEntity.ok(allGuests);
     }
 
+    /**
+     * Cria um novo convidado.
+     *
+     * @param createGuestDTO Dados do convidado a ser criado.
+     * @return Convidado criado e status 201 Created.
+     */
+
     @PostMapping("/register")
     public ResponseEntity<GuestDTO> createGuest(@RequestBody CreateGuestDTO createGuestDTO) {
 
@@ -52,6 +77,14 @@ public class GuestController {
         GuestDTO guestDTO = GuestMapper.toDTO(guest);
         return ResponseEntity.status(201).body(guestDTO);
     }
+
+    /**
+     * Atualiza um convidado existente.
+     *
+     * @param guestDTO Dados atualizados do convidado.
+     * @param guestId ID do convidado a ser atualizado.
+     * @return Convidado atualizado ou 404 caso não encontrado.
+     */
 
     @PutMapping("/update/{guestId}")
     public ResponseEntity<GuestDTO> updateGuest(@RequestBody GuestDTO guestDTO, @PathVariable UUID guestId) {
@@ -64,6 +97,13 @@ public class GuestController {
             return ResponseEntity.ok(newGuest.get());
         }
     }
+
+    /**
+     * Exclui um convidado com base no ID fornecido.
+     *
+     * @param guestId ID do convidado a ser excluído.
+     * @return Mensagem de sucesso ao excluir o convidado ou 404 caso não encontrado.
+     */
 
     @DeleteMapping("/delete/{guestId}")
     public ResponseEntity<String> deleteGuest(@PathVariable UUID guestId) {

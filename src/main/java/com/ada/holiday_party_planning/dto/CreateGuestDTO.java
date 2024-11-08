@@ -3,6 +3,12 @@ package com.ada.holiday_party_planning.dto;
 import com.ada.holiday_party_planning.enums.GuestStatusEnum;
 import com.ada.holiday_party_planning.model.Event;
 
+/**
+ * DTO para a criação de um novo convidado para um evento.
+ * Armazena os dados essenciais para o cadastro de um convidado,
+ * incluindo nome, email, status, evento relacionado e confirmação de presença.
+ */
+
 public class CreateGuestDTO {
 
     private String name;
@@ -11,6 +17,16 @@ public class CreateGuestDTO {
     private Event event;
     private boolean isConfirmed;
 
+    /**
+     * Construtor para inicializar o DTO com todos os atributos.
+     *
+     * @param name Nome do convidado.
+     * @param email Email do convidado.
+     * @param status Status do convidado (enum de status).
+     * @param event Evento ao qual o convidado está associado.
+     * @param isConfirmed Indica se a presença foi confirmada.
+     */
+
     public CreateGuestDTO(String name, String email, GuestStatusEnum status,Event event, boolean isConfirmed) {
         this.name = name;
         this.email = email;
@@ -18,6 +34,8 @@ public class CreateGuestDTO {
         this.event = event;
         this.isConfirmed = isConfirmed;
     }
+
+    // Getters e Setters
 
     public String getName() {
         return name;

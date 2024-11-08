@@ -3,6 +3,12 @@ package com.ada.holiday_party_planning.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * DTO para representar um evento com detalhes sobre o dono da festa.
+ * Esta classe é usada para transferir informações completas de um evento, incluindo
+ * os detalhes do evento e do dono da festa.
+ */
+
 public class EventWithPartyOwnerDTO {
 
     private final UUID eventID;
@@ -15,6 +21,22 @@ public class EventWithPartyOwnerDTO {
     private Boolean funActivate;
     private String categoryFun;
     private PartyOwnerDTO partyOwnerDTO;
+
+    /**
+     * Construtor para inicializar os dados principais de um evento com as informações
+     * do dono da festa.
+     *
+     * @param eventiD Identificador único do evento.
+     * @param theme Tema do evento.
+     * @param title Título do evento.
+     * @param date Data e hora do evento.
+     * @param place Local do evento.
+     * @param description Descrição do evento.
+     * @param descriptionTranslateFun Descrição traduzida relacionada à diversão.
+     * @param funActivate Se a categoria de diversão está ativada.
+     * @param categoryFun Categoria de diversão.
+     * @param partyOwnerDTO Informações do dono da festa.
+     */
 
     public EventWithPartyOwnerDTO(UUID eventiD, String theme,
                                   String title, LocalDateTime date,
@@ -33,6 +55,8 @@ public class EventWithPartyOwnerDTO {
         this.categoryFun = categoryFun;
         this.partyOwnerDTO = partyOwnerDTO;
     }
+
+    // Getters e Setters
 
     public UUID getEventID() {
         return eventID;
