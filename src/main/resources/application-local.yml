@@ -8,10 +8,21 @@ spring:
     datasource:
       url: jdbc:postgresql://localhost:5432/lc_party_planner
       username: postgres
-      password: 123456
+      password: 1234
       driver-class-name: org.postgresql.Driver
     jpa:
       hibernate:
         ddl-auto: update
       properties:
         hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: holydaypartyplanner@gmail.com
+        password: wybs njso nzgg vtkf
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true

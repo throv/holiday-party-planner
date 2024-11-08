@@ -5,6 +5,12 @@ import jakarta.persistence.*;
 
 import java.util.UUID;
 
+/**
+ * Representa um convidado de um evento, contendo informações sobre o nome, email,
+ * status do convite (confirmado ou não) e a relação com o evento ao qual o convidado pertence.
+ * A classe também mantém a confirmação do convite, indicando se o convidado aceitou o convite.
+ */
+
 @Entity
 @Table(name = "guests")
 public class Guest {
@@ -28,18 +34,44 @@ public class Guest {
     @JoinColumn(name = "event_id", referencedColumnName = "event_id", nullable = false)
     private Event event;
 
+    @Column(name = "is_confirmed", nullable = false)
+    private boolean isConfirmed;
+
+    /**
+     * Construtor padrão.
+     */
+
     public Guest() {}
 
-    public Guest(UUID guestId, String name, String email, GuestStatusEnum status, Event event) {
+    /**
+     * Construtor para criar um convidado com informações específicas.
+     *
+     * @param guestId ID único do convidado.
+     * @param status Status do convidado (confirmado ou não).
+     * @param email E-mail do convidado.
+     * @param name Nome do convidado.
+     * @param event Evento ao qual o convidado pertence.
+     * @param isConfirmed Indica se o convidado confirmou sua presença.
+     */
+
+    public Guest(UUID guestId, GuestStatusEnum status, String email, String name, Event event, boolean isConfirmed) {
         this.guestId = guestId;
-        this.name = name;
-        this.email = email;
         this.status = status;
+        this.email = email;
+        this.name = name;
         this.event = event;
+        this.isConfirmed = isConfirmed;
+
     }
+
+    // Getters e Setters
 
     public UUID getGuestId() {
         return guestId;
+    }
+
+    public void setGuestId(UUID guestId) {
+        this.guestId = guestId;
     }
 
     public String getName() {
@@ -72,5 +104,13 @@ public class Guest {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public boolean isConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(boolean isConfirmed) {
+        this.isConfirmed = isConfirmed;
     }
 }
