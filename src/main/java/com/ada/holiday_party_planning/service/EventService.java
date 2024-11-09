@@ -67,10 +67,10 @@ public class EventService {
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
-//        if (event.getFunActivate() == true) {
-//            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
-//            event.setDescriptionTranslateFun(mensagemTraduzida);
-//        }
+        if (event.getFunActivate() == true) {
+            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
+            event.setDescriptionTranslateFun(mensagemTraduzida);
+        }
         eventRepository.save(event);
     }
 
@@ -151,32 +151,19 @@ public class EventService {
         eventRepository.deleteById(eventID);
     }
 
+    /**
+     //     * Realiza a tradução assíncrona da descrição do evento, se ativado.
+     //     *
+     //     * @param message define a mensagem a ser traduzida
+     //     * @param category define em qual lingua vai traduzir
+     //     */
+
     @Async
-    public void translateFun(UUID eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
-        if (event.getFunActivate() && event.getDescription() != null) {
-            try {
-                String textTranslate = APIGoogleTranslate.translateMensage(event.getDescription(), "pt-br", "en");
-                // String textFun = APIFunTranlation.tranlateFun(textTranslate, event.getCategoryFun());
-                event.setDescriptionTranslateFun("050");
-                System.out.println(textTranslate);
-            } catch (Exception e) {
-                System.out.println("Erro na tradução: " + e.getMessage());
-            }
+    public String translateFun (String message, String category) {
+        if (message != null) {
+            String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
+            return APIFunTranlation.tranlateFun(textTranslate, "minion");
         }
+        return "";
     }
 }
-//    /**
-//     * Realiza a tradução assíncrona da descrição do evento, se ativado.
-//     *
-//     * @param message define a mensagem a ser traduzida
-//     * @param category define em qual lingua vai traduzir
-//     */
-//    public String translateFun (String message, String category) {
-//        if (message != null) {
-//            String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
-//            return APIFunTranlation.tranlateFun(textTranslate, "minion");
-//        }
-//        return "";
-//    }
