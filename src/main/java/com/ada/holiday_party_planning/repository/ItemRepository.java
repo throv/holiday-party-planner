@@ -17,7 +17,6 @@ public interface ItemRepository extends JpaRepository<Item, UUID> {
 
     //Método que permite buscar todos os itens relacionados a um guestId específico
     List<Item> findByGuestId(UUID guestId);
-
     //Método que verifica se um item com o ID especificado pertence a um convidado específico
     boolean existsByIdAndGuestId(UUID itemId, UUID guestId);
 

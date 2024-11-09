@@ -105,6 +105,7 @@ public class ItemController {
 
     }
 
+    //
     //Endpoint para listar todos os itens de um convidado específico
     @GetMapping("/guest/{guestId}")
     public ResponseEntity<List<Item>> getItemsByGuest(@PathVariable UUID guestId) {

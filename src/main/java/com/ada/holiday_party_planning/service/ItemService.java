@@ -97,6 +97,7 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
+    //
     //Serviço para verificar se um item está associado a um convidado específico
     public boolean isItemWithGuest(UUID itemId, UUID guestId) {
         return itemRepository.existsByIdAndGuestId(itemId, guestId);

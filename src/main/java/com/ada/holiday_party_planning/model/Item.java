@@ -35,7 +35,6 @@ public class Item {
     private Event event;
 
     //Relacionamento Many-to-One entre Item e Guest
-    //Um convidado (Guest) pode ter vários itens (Item) associados, mas cada item pertence a um único convidado
     @ManyToOne
     @JoinColumn(name = "guest_id")
     private Guest guest;
