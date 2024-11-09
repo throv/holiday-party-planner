@@ -66,6 +66,22 @@
 - IDE (como IntelliJ IDEA) configurada para desenvolvimento em Java.
 - PostgresSQL instalado e configurado.
 
+### Passos para Instalação
+1. Clone o repositório do projeto:
+   ```bash
+   git clone https://github.com/throv/holiday-party-planner.git
+   ```
+2. Abra o projeto na sua IDE preferida.
+3. No campo Environmental Variables inclua:
+   ```bash
+   GOOGLE_API_KEY=AIzaSyBI1L7twSZ93RlysEMAPLA4UPtHzX27yUA;SPRING_PROFILES_ACTIVE=local
+   ```
+4. No pgAdmin 4 inicialize o servidor:
+   ```bash
+   lc_party_planner
+   ```
+5. Compile o projeto e execute-o.
+
 ## Projeto desenvolvido por:
 
 [<img alt="Alan Filho" height="75px" src="https://avatars.githubusercontent.com/u/125782386?v=4" width="75px"/>](https://github.com/oalleeN)

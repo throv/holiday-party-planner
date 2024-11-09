@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(exclude = {
 		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class}
 )
-public class HolidayPartyPlanningApplication {
+public class
+HolidayPartyPlanningApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HolidayPartyPlanningApplication.class, args);
