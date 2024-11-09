@@ -19,7 +19,7 @@
 
 - Organizador do Evento: pode "Criar Evento", "Editar Evento" e "Deletar Evento". 
 - Convidado: pode "Visualizar Evento", "Confirmar Presença" e "Selecionar Item da Lista".
-- 
+  
 ### Descrição do Caso de Uso
 
    Resumo: O organizador cria um evento e define uma lista de itens. Os convidados podem acessar essa lista e escolher os itens que levarão.
@@ -64,17 +64,59 @@
     - Se o organizador quiser editar o evento: O organizador pode modificar detalhes do evento ou a lista de itens.
 
 ## Instalação
+
 ### Pré-Requisitos
 
 - Java Development Kit (JDK) instalado.
 - IDE (como IntelliJ IDEA) configurada para desenvolvimento em Java.
 - PostgresSQL instalado e configurado.
 
+## Configuração do Ambiente
+
+### Passo a Passo para clonar o repositório e executar o projeto:
+
+1. Clonar o repositório
+   Abra o terminal, navegue até o diretório onde deseja clonar o projeto e execute o comando:
+   ```bash
+   git clone https://github.com/throv/holiday-party-planner.git
+   ```
+2. Inicializar o Servidor PostgreSQL;
+   - Certifique-se de que o PostgreSQL está instalado e o serviço está ativo. Em alguns sistemas operacionais, você pode inicializar o servidor com o comando:
+   ```bash
+   sudo service postgresql start
+   ```
+   - Inicialize o servidor do projeto usando a aplicação pgAdmin4:
+   ```bash
+   lc_party_planner
+   ```
+   - Faça login com o usuário e senha criados ao instalar o PostgresSQL;
+3. Configurar Variáveis de Ambiente na IDE
+   - Abra o projeto clonado em sua IDE (recomenda-se IntelliJ IDEA).
+   - Localize o arquivo de configuração application.properties ou application.yml (geralmente em src/main/resources).
+   - Altere as variáveis de ambiente para que correspondam ao seu banco de dados PostgreSQL:
+    ```bash
+    datasource:
+      url: jdbc:postgresql://localhost:5432/lc_party_planner
+      username: seu_usuario
+      password: sua_senha
+      driver-class-name: org.postgresql.Driver
+    ```
+   - Confirme que as variáveis estão corretas e salve o arquivo, são elas:
+     ```bash
+     GOOGLE_API_KEY=AIzaSyBI1L7twSZ93RlysEMAPLA4UPtHzX27yUA;SPRING_PROFILES_ACTIVE=local
+     ```
+  4. Executar a Aplicação
+    - No terminal da IDE, inicie a aplicação com o comando:
+     ```bash
+     mvn spring-boot:run
+     ```
+   - A aplicação deverá estar disponível em http://localhost:8080.
+
 ## Projeto desenvolvido por:
 
 [<img alt="Alan Filho" height="75px" src="https://avatars.githubusercontent.com/u/125782386?v=4" width="75px"/>](https://github.com/oalleeN)
 [<img alt="Christina Carvalho" height="75px" src="https://avatars.githubusercontent.com/u/175761726?v=4" width="75px"/>](https://github.com/ChristinaC-dev)
-[<img alt="Karine" height="75px" src="https://avatars.githubusercontent.com/u/138794780?v=4" width="75px"/>](https://github.com/Kahmori)
+[<img alt="Karine Amorim" height="75px" src="https://avatars.githubusercontent.com/u/138794780?v=4" width="75px"/>](https://github.com/Kahmori)
 [<img alt="Lucas Campos" height="75px" src="https://avatars.githubusercontent.com/u/161725621?v=4" width="75px"/>](https://github.com/lucascodebr20)
 [<img alt="Maria Eduarda" height="75px" src="https://avatars.githubusercontent.com/u/134453107?v=4" width="75px"/>](https://github.com/mariaemrqs)
 [<img alt="Thais Vieira" height="75px" src="https://avatars.githubusercontent.com/u/104239787?v=4" width="75px"/>](https://github.com/throv)
