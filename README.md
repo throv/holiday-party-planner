@@ -64,11 +64,50 @@
     - Se o organizador quiser editar o evento: O organizador pode modificar detalhes do evento ou a lista de itens.
 
 ## Instalação
+
 ### Pré-Requisitos
 
 - Java Development Kit (JDK) instalado.
 - IDE (como IntelliJ IDEA) configurada para desenvolvimento em Java.
 - PostgresSQL instalado e configurado.
+
+## Configuração do Ambiente
+
+1. Passo a Passo para clonar o repositório e executar o projeto:
+  - Clonar o repositório Abra o terminal, navegue até o diretório onde deseja clonar o projeto e execute o comando:
+   ``` bash
+   git clone https://github.com/throv/holiday-party-planner.git
+   ```
+2. Inicializar o Servidor PostgreSQL;
+  - Certifique-se de que o PostgreSQL está instalado e o serviço está ativo. Em alguns sistemas operacionais, você pode inicializar o servidor com o comando:
+   ``` bash
+   - sudo service postgresql start
+   ```
+  - Inicialize o servidor do projeto usando a aplicação pgAdmin4:
+   ``` bash
+   lc_party_planner
+   ``` 
+3. Faça login com o usuário e senha criados ao instalar o PostgresSQL;
+  - Configurar Variáveis de Ambiente na IDE
+  - Abra o projeto clonado em sua IDE (recomenda-se IntelliJ IDEA).
+  - Localize o arquivo de configuração application.properties ou application.yml (geralmente em src/main/resources).
+  - Altere as variáveis de ambiente para que correspondam ao seu banco de dados PostgreSQL:
+   ``` bash
+   datasource:
+   url: jdbc:postgresql://localhost:5432/lc_party_planner
+   username: seu_usuario
+   password: sua_senha
+   driver-class-name: org.postgresql.Driver
+   ``` 
+  - Confirme que as variáveis estão corretas e salve o arquivo, são elas:
+   ``` bash
+   GOOGLE_API_KEY=AIzaSyBI1L7twSZ93RlysEMAPLA4UPtHzX27yUA;SPRING_PROFILES_ACTIVE=local
+   ```
+  - Executar a Aplicação - No terminal da IDE, inicie a aplicação com o comando:
+   ``` bash
+   mvn spring-boot:run
+   ```
+  - A aplicação deverá estar disponível em http://localhost:8080.
 
 ## Projeto desenvolvido por:
 
