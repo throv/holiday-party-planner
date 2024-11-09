@@ -5,6 +5,7 @@ import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
 import com.ada.holiday_party_planning.mappers.EventMapper;
 import com.ada.holiday_party_planning.model.Event;
+import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.PartyOwner;
 import com.ada.holiday_party_planning.repository.EventRepository;
 import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
@@ -15,6 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,8 +59,11 @@ public class EventService {
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
+        if (event.getFunActivate() == true) {
+            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
+            event.setDescriptionTranslateFun(mensagemTraduzida);
+        }
         eventRepository.save(event);
-        translateFun(event.getEventId());
     }
 
     /**
@@ -77,8 +82,8 @@ public class EventService {
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
         event.setPlace(updateEventDTO.getPlace());
+        //translateFun(eventId);
         eventRepository.save(event);
-        translateFun(eventId);
     }
 
     /**
@@ -117,23 +122,17 @@ public class EventService {
     /**
      * Realiza a tradução assíncrona da descrição do evento, se ativado.
      *
-     * @param eventId O ID do evento que deve ser traduzido.
+     * @param message define a mensagem a ser traduzida
+     * @param category define em qual lingua vai traduzir
      */
 
     @Async
-    public void translateFun (UUID eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
-        if (event.getFunActivate() && event.getDescription() != null) {
-            try {
-                String textTranslate = APIGoogleTranslate.translateMensage(event.getDescription(), "pt-br", "en");
-                // String textFun = APIFunTranlation.tranlateFun(textTranslate, event.getCategoryFun());
-                event.setDescriptionTranslateFun("050");
-                System.out.println(textTranslate);
-            } catch (Exception e) {
-                System.out.println("Erro na tradução: " + e.getMessage());
-            }
+    public String translateFun (String message, String category) {
+        if (message != null) {
+            String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
+            return APIFunTranlation.tranlateFun(textTranslate, "minion");
         }
+        return "";
     }
 
 }
