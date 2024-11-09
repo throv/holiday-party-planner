@@ -1,0 +1,121 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+}
+
+.box_login {
+    display: flex;
+    width: 80%;
+    max-width: 800px;
+    height: 500px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.box_login .imagem {
+    width: 50%;
+    background-image: url();
+    background-size: cover;
+    background-position: center;
+}
+
+.box_login .formulario {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 20px;
+    background-color: #ffffff;
+}
+
+.formulario h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.formulario form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.formulario input[type="text"],
+.formulario input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.formulario button.login-btn,
+.formulario .register-btn {
+    width: 100%;
+    max-width: 450px; 
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 10px auto; 
+    display: block; 
+}
+
+
+.formulario button.login-btn {
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.formulario button.login-btn:hover {
+    background-color: #3c6e3e;
+}
+
+
+.formulario .register-btn {
+    background-color: #ffffff;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.formulario .register-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
+.separator {
+    width: 80%;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px auto;
+}
+
+@media (max-width: 768px) {
+    .box_login {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .box_login .imagem,
+    .box_login .formulario {
+        width: 100%;
+    }
+}

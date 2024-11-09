@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -65,9 +66,12 @@ public class EventService {
         EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
-        Event event = eventMapper.createDTOToModel(createEventDTO, partyOwner);
+        Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
+//        if (event.getFunActivate() == true) {
+//            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
+//            event.setDescriptionTranslateFun(mensagemTraduzida);
+//        }
         eventRepository.save(event);
-        translateFun(event.getEventId());
     }
 
     /**
@@ -85,8 +89,8 @@ public class EventService {
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
         event.setPlace(updateEventDTO.getPlace());
+        //translateFun(eventId);
         eventRepository.save(event);
-        translateFun(eventId);
     }
 
     /**
@@ -147,12 +151,6 @@ public class EventService {
         eventRepository.deleteById(eventID);
     }
 
-    /**
-     * Realiza a tradução assíncrona da descrição do evento, se ativado.
-     *
-     * @param eventId O ID do evento que deve ser traduzido.
-     */
-
     @Async
     public void translateFun(UUID eventId) {
         Event event = eventRepository.findById(eventId)
@@ -169,4 +167,16 @@ public class EventService {
         }
     }
 }
-
+//    /**
+//     * Realiza a tradução assíncrona da descrição do evento, se ativado.
+//     *
+//     * @param message define a mensagem a ser traduzida
+//     * @param category define em qual lingua vai traduzir
+//     */
+//    public String translateFun (String message, String category) {
+//        if (message != null) {
+//            String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
+//            return APIFunTranlation.tranlateFun(textTranslate, "minion");
+//        }
+//        return "";
+//    }

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/party-owners")
+@CrossOrigin("*")
 public class PartyOwnerController {
 
     private final PartyOwnerService partyOwnerService;
