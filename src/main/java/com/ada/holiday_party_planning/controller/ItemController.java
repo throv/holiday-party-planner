@@ -1,20 +1,15 @@
 package com.ada.holiday_party_planning.controller;
 
 import com.ada.holiday_party_planning.dto.ItemDTO;
-import com.ada.holiday_party_planning.exceptions.ItemNotFoundException;
 import com.ada.holiday_party_planning.mappers.ItemMapper;
-import com.ada.holiday_party_planning.model.Event;
-import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.Item;
 import com.ada.holiday_party_planning.repository.GuestRepository;
 import com.ada.holiday_party_planning.repository.ItemRepository;
-import com.ada.holiday_party_planning.service.EventService;
 import com.ada.holiday_party_planning.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -96,15 +91,8 @@ public class ItemController {
      */
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable UUID id) {
-        try{
-            itemService.deleteItem(id);
-            return ResponseEntity.noContent().build();
-        }
-        catch(ItemNotFoundException e ){
-            return ResponseEntity.notFound().build();
-        }
-
+    public void deleteItem(@PathVariable UUID id) {
+        itemService.deleteItem(id);
     }
 
     //
