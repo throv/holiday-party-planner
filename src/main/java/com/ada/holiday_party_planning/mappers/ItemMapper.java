@@ -26,7 +26,8 @@ public class ItemMapper {
                 item.getItemId(),
                 item.getName(),
                 item.getQuantity(),
-                item.getValue());
+                item.getValue(),
+                item.getGuest() != null ? GuestMapper.toDTO(item.getGuest()) : null);
     }
 
     /**

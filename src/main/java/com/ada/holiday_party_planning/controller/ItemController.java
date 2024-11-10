@@ -7,6 +7,7 @@ import com.ada.holiday_party_planning.model.Item;
 import com.ada.holiday_party_planning.repository.GuestRepository;
 import com.ada.holiday_party_planning.repository.ItemRepository;
 import com.ada.holiday_party_planning.service.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -99,36 +100,21 @@ public class ItemController {
     //Endpoint para listar todos os itens de um convidado específico
     @GetMapping("/guest/{guestId}")
     public ResponseEntity<List<Item>> getItemsByGuest(@PathVariable UUID guestId) {
-        List<Item> items = itemRepository.findByGuestId(guestId);
-        return ResponseEntity.ok(items);
+        return ResponseEntity.ok(itemService.itemsByGuestId(guestId));
     }
 
     //Endpoint para adicionar um novo item a um convidado específico
-    @PostMapping("/guest/{guestId}")
-    public ResponseEntity<Item> addItemToGuest(@PathVariable UUID guestId, @RequestBody Item item) {
-        // Busca o Guest pelo ID no banco de dados
-        Guest guest = guestRepository.findById(guestId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Guest not found"));
-
-        // Associa o convidado ao item
-        item.setGuest(guest);
-
-        // Salva o item no repositório
-        Item createdItem = itemRepository.save(item);
-
+    @PostMapping("{itemId}/guest/{guestId}")
+    public ResponseEntity<Item> addItemToGuest(@PathVariable UUID guestId, @PathVariable UUID itemId) {
+        Item item = itemService.addItemToGuest(guestId, itemId);
         // Retorna o item criado com status HTTP 201 (Created)
-        return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
+        return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
     //Endpoint para remover um item específico de um convidado
-    @DeleteMapping("/guest/{guestId}/item/{itemId}")
-    public ResponseEntity<Void> deleteItemFromGuest(@PathVariable UUID guestId, @PathVariable UUID itemId) {
-        // Verifica se o item pertence ao convidado antes de deletar
-        if (itemService.isItemWithGuest(itemId, guestId)) {
-            itemRepository.deleteById(itemId);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Item não encontrado para o convidado
-        }
+    @DeleteMapping("{itemId}/guest/{guestId}")
+    public ResponseEntity<ItemDTO> deleteItemFromGuest(@PathVariable UUID guestId, @PathVariable UUID itemId) {
+        Item item = itemService.removeGuestFromItem(guestId, itemId);
+        return new ResponseEntity<>(ItemMapper.toDTO(item), HttpStatus.OK);
     }
 }
