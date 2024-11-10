@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+}
+
+.box_principal {
+    display: flex;
+    width: 90%;
+    max-width: 800px;
+    height: 500px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.box_principal .imagem {
+    width: 50%;
+    background-image: url('../../src/assets/img/login-cadastro/illustracao-pc.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.forms_cadastro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #ffffff;
+}
+
+.forms_cadastro h3 {
+    font-size: 22px;
+    text-align: center;
+    margin: 0px 0;
+    color: #333;
+}
+
+.forms_cadastro input[type="text"],
+.forms_cadastro input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.forms_cadastro input[type="text"]:focus,
+.forms_cadastro input[type="password"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+#submit_button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+#submit_button:hover {
+    background-color: #3c6e3e;
+}
+
+@media (max-width: 768px) {
+    .box_principal {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .box_principal .imagem,
+    .forms_cadastro {
+        width: 100%;
+    }
+}

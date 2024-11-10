@@ -5,8 +5,11 @@ import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
 import com.ada.holiday_party_planning.mappers.EventMapper;
 import com.ada.holiday_party_planning.model.Event;
+import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.PartyOwner;
 import com.ada.holiday_party_planning.repository.EventRepository;
+import com.ada.holiday_party_planning.repository.GuestRepository;
+import com.ada.holiday_party_planning.repository.ItemRepository;
 import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
 import com.ada.holiday_party_planning.util.APIFunTranlation;
 import com.ada.holiday_party_planning.util.APIGoogleTranslate;
@@ -15,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,43 +34,51 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final PartyOwnerRepository partyOwnerRepository;
+    private final GuestRepository guestRepository;
+    private final ItemRepository itemRepository;
+
 
     /**
      * Construtor do serviço que recebe os repositórios necessários.
      *
-     * @param eventRepository Repositório para manipulação de eventos.
+     * @param eventRepository      Repositório para manipulação de eventos.
      * @param partyOwnerRepository Repositório para manipulação dos donos de festa.
+     * @param guestRepository      Repositório para manipulação de convidados.
+     * @param itemRepository       Repositório para manipulação de itens.
      */
 
-    public EventService(EventRepository eventRepository, PartyOwnerRepository partyOwnerRepository) {
+    public EventService(EventRepository eventRepository, PartyOwnerRepository partyOwnerRepository, GuestRepository guestRepository, ItemRepository itemRepository) {
         this.eventRepository = eventRepository;
         this.partyOwnerRepository = partyOwnerRepository;
+        this.guestRepository = guestRepository;
+        this.itemRepository = itemRepository;
     }
 
     /**
      * Cria um novo evento e o associa a um dono de festa.
      *
-     * @param ownerID O ID do dono da festa.
+     * @param ownerID        O ID do dono da festa.
      * @param createEventDTO O DTO contendo os dados para criação do evento.
-     *
      * @throws ResponseStatusException Se o dono da festa não for encontrado.
      */
 
     public void createEvent(UUID ownerID, CreateEventDTO createEventDTO) {
-        EventMapper eventMapper = new EventMapper(partyOwnerRepository,eventRepository);
+        EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
+        if (event.getFunActivate() == true) {
+            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
+            event.setDescriptionTranslateFun(mensagemTraduzida);
+        }
         eventRepository.save(event);
-        translateFun(event.getEventId());
     }
 
     /**
      * Atualiza as informações de um evento existente.
      *
-     * @param eventId O ID do evento a ser atualizado.
+     * @param eventId        O ID do evento a ser atualizado.
      * @param updateEventDTO O DTO contendo os dados para atualização do evento.
-     *
      * @throws ResponseStatusException Se o evento não for encontrado.
      */
 
@@ -77,8 +89,8 @@ public class EventService {
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
         event.setPlace(updateEventDTO.getPlace());
+        //translateFun(eventId);
         eventRepository.save(event);
-        translateFun(eventId);
     }
 
     /**
@@ -87,7 +99,7 @@ public class EventService {
      * @return Uma lista com todos os eventos.
      */
 
-    public List<Event> listAllEvent () {
+    public List<Event> listAllEvent() {
         return eventRepository.findAll();
     }
 
@@ -99,41 +111,59 @@ public class EventService {
      */
 
     public List<EventWithPartyOwnerDTO> eventsByPartyOwner(UUID ownerID) {
-        EventMapper eventMapper = new EventMapper(partyOwnerRepository,eventRepository);
+        EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         List<EventWithPartyOwnerDTO> allEvents = eventMapper.eventWithPartyOwnerDTO(ownerID);
         return allEvents;
     }
 
     /**
-     * Exclui um evento baseado no seu ID.
+     * Exclui um evento e seus dados relacionados, caso não haja convidados confirmados para o evento.
+     * <p>
+     * O método verifica se há convidados confirmados para o evento com o ID fornecido.
+     * Caso algum convidado esteja confirmado, uma exceção é lançada e a exclusão não é permitida.
+     * Se não houver convidados confirmados, o método realiza uma exclusão em cascata: remove
+     * todos os convidados e itens relacionados ao evento antes de excluir o próprio evento.
      *
      * @param eventID O ID do evento a ser excluído.
+     * @throws ResponseStatusException com status CONFLICT se houver convidados confirmados para o evento.
      */
 
-    public void deleteEvent (UUID eventID) {
+    public void deleteEvent(UUID eventID) throws ResponseStatusException {
+        List<Guest> guests = guestRepository.findAll();
+
+        boolean hasConfirmedGuest = guests.stream()
+                .filter(guest -> eventID.equals(guest.getEvent().getEventId()))
+                .anyMatch(Guest::isConfirmed);
+
+        if (hasConfirmedGuest) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Não é possível deletar esse evento pois já tem convidado confirmado.");
+        }
+
+        guestRepository.findAll().stream()
+                .filter(guest -> eventID.equals(guest.getEvent().getEventId()))
+                .forEach(guest -> guestRepository.deleteById(guest.getGuestId()));
+
+        itemRepository.findAll().stream()
+                .filter(item -> eventID.equals(item.getEvent().getEventId()))
+                .forEach(item -> itemRepository.deleteById(item.getItemId()));
+
         eventRepository.deleteById(eventID);
     }
 
     /**
-     * Realiza a tradução assíncrona da descrição do evento, se ativado.
-     *
-     * @param eventId O ID do evento que deve ser traduzido.
-     */
+     //     * Realiza a tradução assíncrona da descrição do evento, se ativado.
+     //     *
+     //     * @param message define a mensagem a ser traduzida
+     //     * @param category define em qual lingua vai traduzir
+     //     */
 
     @Async
-    public void translateFun (UUID eventId) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
-        if (event.getFunActivate() && event.getDescription() != null) {
-            try {
-                String textTranslate = APIGoogleTranslate.translateMensage(event.getDescription(), "pt-br", "en");
-                // String textFun = APIFunTranlation.tranlateFun(textTranslate, event.getCategoryFun());
-                event.setDescriptionTranslateFun("050");
-                System.out.println(textTranslate);
-            } catch (Exception e) {
-                System.out.println("Erro na tradução: " + e.getMessage());
-            }
+    public String translateFun (String message, String category) {
+        if (message != null) {
+            String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
+            return APIFunTranlation.tranlateFun(textTranslate, "minion");
         }
+        return "";
     }
-
 }

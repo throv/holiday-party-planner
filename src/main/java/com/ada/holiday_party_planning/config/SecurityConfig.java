@@ -32,8 +32,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .httpBasic(Customizer.withDefaults())
-                .authorizeRequests(authorize  ->
-                        authorize.anyRequest().permitAll())
+                .authorizeRequests(authorize  -> authorize.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer -> AbstractHttpConfigurer.disable())
                 .build();
     }
 }

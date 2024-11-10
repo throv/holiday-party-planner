@@ -63,7 +63,7 @@ public class Event {
      */
 
     @Column(name = "description_translate_fun")
-    private String descriptionTranslateFun = "TESTE";
+    private String descriptionTranslateFun;
 
     /**
      * Indica se a diversão do evento está ativada.
