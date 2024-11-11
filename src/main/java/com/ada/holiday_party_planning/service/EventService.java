@@ -3,6 +3,7 @@ package com.ada.holiday_party_planning.service;
 import com.ada.holiday_party_planning.dto.CreateEventDTO;
 import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
+import com.ada.holiday_party_planning.enums.CategoryFun;
 import com.ada.holiday_party_planning.mappers.EventMapper;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
@@ -66,11 +67,15 @@ public class EventService {
         EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
-        Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
+
+        Event event = eventMapper.createDTOToModel(createEventDTO, partyOwner);
+
         if (event.getFunActivate()) {
-            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
+            CategoryFun category = CategoryFun.valueOf(event.getCategoryFun().toLowerCase());
+            String mensagemTraduzida = translateFun(event.getDescription(), category);
             event.setDescriptionTranslateFun(mensagemTraduzida);
         }
+
         eventRepository.save(event);
     }
 
@@ -92,7 +97,9 @@ public class EventService {
         event.setDescription(updateEventDTO.getDescription());
         event.setFunActivate(updateEventDTO.getFunActivate());
         if (event.getFunActivate()) {
-            event.setDescriptionTranslateFun(translateFun(event.getDescription(),event.getCategoryFun()));
+            CategoryFun category = CategoryFun.valueOf(event.getCategoryFun().toLowerCase());
+            String mensagemTraduzida = translateFun(event.getDescription(), category);
+            event.setDescriptionTranslateFun(mensagemTraduzida);
         }
         eventRepository.save(event);
     }
@@ -163,10 +170,16 @@ public class EventService {
      //     */
 
     @Async
-    public String translateFun (String message, String category) {
+    public String translateFun(String message, CategoryFun category) {
         if (message != null) {
             String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
-            return APIFunTranlation.tranlateFun(textTranslate, "minion");
+            String translatedText = APIFunTranlation.tranlateFun(textTranslate, category.name().toLowerCase());
+
+            if (category.isRepeat()) {
+                translatedText = APIGoogleTranslate.translateMensage(translatedText, "en", "pt-br");
+            }
+
+            return translatedText;
         }
         return "";
     }
