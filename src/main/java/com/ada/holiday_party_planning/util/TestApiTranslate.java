@@ -7,7 +7,7 @@ public class TestApiTranslate {
         String texto = "Eu odeio todos os humanos, aqueles malditos. Irei eliminar todos";
 
         String mensagemGoogle = APIGoogleTranslate.translateMensage(texto,"pt-br","en");
-        String mensagemFunTeste = APIFunTranlation.tranlateFun(mensagemGoogle,"yoda");
+        String mensagemFunTeste = APIFunTranlation.tranlateFun(mensagemGoogle,"minion");
         String mensagemRetorno = APIGoogleTranslate.translateMensage(mensagemFunTeste,"en","pt-br");
 
         System.out.println(texto);

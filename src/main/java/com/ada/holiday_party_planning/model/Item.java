@@ -3,9 +3,6 @@ package com.ada.holiday_party_planning.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 
-import org.springframework.http.HttpStatus;
-
-
 /**
  * Representa um item necessário para um evento, contendo informações sobre o nome, quantidade, valor e o evento
  * ao qual o item está associado. Essa classe é utilizada para armazenar os itens necessários para o planejamento
@@ -15,6 +12,7 @@ import org.springframework.http.HttpStatus;
 @Entity
 @Table(name = "item")
 public class Item {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
