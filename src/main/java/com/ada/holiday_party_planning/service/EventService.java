@@ -14,15 +14,14 @@ import com.ada.holiday_party_planning.repository.ItemRepository;
 import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
 import com.ada.holiday_party_planning.util.APIFunTranlation;
 import com.ada.holiday_party_planning.util.APIGoogleTranslate;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * Serviço para gerenciar eventos e a lógica de negócio relacionada aos eventos e seus donos.
@@ -171,12 +170,26 @@ public class EventService {
     }
 
     public void sendInvites(UUID eventId) {
+
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found."));
         List<Guest> guests = guestRepository.findByEvent(event);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm");
+
         for (Guest guest : guests) {
-            String eventLink = "http://localhost:8080/events/" + eventId;
-            emailService.sendEmail(guest.getEmail(), "Event Invitation", "You are invited to the event. Here is the link: " + eventLink);
+            Map<String, String> variables = new HashMap<>();
+            variables.put("eventTitle", event.getTitle());
+            variables.put("hostName", event.getOwner().getName());
+            variables.put("eventDate", event.getDate().format(formatter));
+            variables.put("eventLocation", event.getPlace());
+            variables.put("eventLink", "http://localhost:8080/events/" + event.getEventId());
+
+            try {
+                emailService.sendEmail(guest.getEmail(), "You're Invited!", variables);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send email.");
+            }
         }
     }
 }
