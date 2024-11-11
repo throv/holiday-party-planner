@@ -1,12 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Página de Perfil</title>
+    <link rel="stylesheet" href="painel_usuario.css">
 </head>
+
 <body>
-    
-    
+    <header class="user-info">
+        <div class="profile-container">
+            <div class="profile-image">
+                <img src="../../src/assets/img/perfil/imagem_2024-06-17_151110069.jpg" alt="Imagem de Perfil">
+            </div>
+            <div class="profile-details">
+                <h2>Olá, nome do usuário.</h2>
+                <p>Você possui x eventos ativos</p>
+                <p>O evento mais próximo é no dia dd/mm/year</p>
+            </div>
+        </div>
+        <div class="button-container">
+
+            <button class="add-event-button" role="button">Adicionar Evento</button>
+        </div>
+    </header>
+
+    <section class="cards-section">
+        <a href=""><div class="card">
+            <h2>Título do Evento</h2>
+            <p><strong>Data:</strong> 10/11/2024</p>
+            <p><strong>Local:</strong> Auditório Principal</p>
+            <p class="description">Descrição do evento. Aqui você pode incluir mais informações detalhadas sobre o que vai acontecer.</p>
+            <button>EDITAR EVENTO</button>
+        </div></a>
+        <div class="card">
+            <h2>Outro Evento</h2>
+            <p><strong>Data:</strong> 15/11/2024</p>
+            <p><strong>Local:</strong> Sala de Reunião</p>
+            <p class="description">Outra descrição do evento. Detalhes adicionais sobre o evento podem ser incluídos aqui.</p>
+        </div>
+    </section>
 </body>
 </html>
