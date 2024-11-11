@@ -9,7 +9,6 @@ import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.repository.EventRepository;
 import com.ada.holiday_party_planning.repository.GuestRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
