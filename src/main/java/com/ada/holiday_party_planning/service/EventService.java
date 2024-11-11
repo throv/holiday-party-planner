@@ -70,7 +70,7 @@ public class EventService {
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
                 .orElseThrow(PartyOwnerNotFoundException::new);
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
-        if (event.getFunActivate() == true) {
+        if (event.getFunActivate()) {
             String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
             event.setDescriptionTranslateFun(mensagemTraduzida);
         }
@@ -92,7 +92,11 @@ public class EventService {
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
         event.setPlace(updateEventDTO.getPlace());
-        //translateFun(eventId);
+        event.setDescription(updateEventDTO.getDescription());
+        event.setFunActivate(updateEventDTO.getFunActivate());
+        if (event.getFunActivate()) {
+            event.setDescriptionTranslateFun(translateFun(event.getDescription(),event.getCategoryFun()));
+        }
         eventRepository.save(event);
     }
 
