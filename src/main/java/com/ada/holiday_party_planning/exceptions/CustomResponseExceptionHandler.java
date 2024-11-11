@@ -117,5 +117,15 @@ public class CustomResponseExceptionHandler extends ResponseEntityExceptionHandl
                 "GUEST_NOT_FOUND",
                 exception.getMessage()
         );
+    }    
+
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> itemNotFoundHandler(ItemNotFoundException exception) {
+
+        return getExceptionResponse(
+                HttpStatus.NOT_FOUND,
+                "ITEM_NOT_FOUND",
+                exception.getMessage()
+        );
     }
 }
