@@ -2,6 +2,7 @@ package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.dto.CreateEventDTO;
 import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
+import com.ada.holiday_party_planning.dto.GuestDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
 import com.ada.holiday_party_planning.mappers.EventMapper;
 import com.ada.holiday_party_planning.model.Event;
@@ -36,6 +37,7 @@ public class EventService {
     private final PartyOwnerRepository partyOwnerRepository;
     private final GuestRepository guestRepository;
     private final ItemRepository itemRepository;
+    private final EmailService emailService;
 
 
     /**
@@ -47,11 +49,12 @@ public class EventService {
      * @param itemRepository       Repositório para manipulação de itens.
      */
 
-    public EventService(EventRepository eventRepository, PartyOwnerRepository partyOwnerRepository, GuestRepository guestRepository, ItemRepository itemRepository) {
+    public EventService(EventRepository eventRepository, PartyOwnerRepository partyOwnerRepository, GuestRepository guestRepository, ItemRepository itemRepository, EmailService emailService) {
         this.eventRepository = eventRepository;
         this.partyOwnerRepository = partyOwnerRepository;
         this.guestRepository = guestRepository;
         this.itemRepository = itemRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -165,5 +168,15 @@ public class EventService {
             return APIFunTranlation.tranlateFun(textTranslate, "minion");
         }
         return "";
+    }
+
+    public void sendInvites(UUID eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found."));
+        List<Guest> guests = guestRepository.findByEvent(event);
+        for (Guest guest : guests) {
+            String eventLink = "http://localhost:8080/events/" + eventId;
+            emailService.sendEmail(guest.getEmail(), "Event Invitation", "You are invited to the event. Here is the link: " + eventLink);
+        }
     }
 }
