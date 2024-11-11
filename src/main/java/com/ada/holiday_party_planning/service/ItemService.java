@@ -2,7 +2,7 @@ package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
 import com.ada.holiday_party_planning.exceptions.ItemNotFoundException;
-import com.ada.holiday_party_planning.mappers.ItemMapper;
+import com.ada.holiday_party_planning.exceptions.GuestNotFoundException;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.Item;
