@@ -117,7 +117,7 @@ public class ItemService {
     public Item addItemToGuest(UUID guestId, UUID itemId) {
         // Busca o Guest pelo ID no banco de dados
         Guest guest = guestRepository.findById(guestId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Guest not found"));
+                .orElseThrow(GuestNotFoundException::new);
 
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         // Associa o convidado ao item

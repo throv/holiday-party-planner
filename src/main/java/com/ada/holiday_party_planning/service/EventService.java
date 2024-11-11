@@ -2,8 +2,10 @@ package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.dto.CreateEventDTO;
 import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.GuestDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
+import com.ada.holiday_party_planning.exceptions.EventDeleteConflictException;
+import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
+import com.ada.holiday_party_planning.exceptions.PartyOwnerNotFoundException;
 import com.ada.holiday_party_planning.mappers.EventMapper;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
@@ -14,7 +16,6 @@ import com.ada.holiday_party_planning.repository.ItemRepository;
 import com.ada.holiday_party_planning.repository.PartyOwnerRepository;
 import com.ada.holiday_party_planning.util.APIFunTranlation;
 import com.ada.holiday_party_planning.util.APIGoogleTranslate;
-import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class EventService {
     public void createEvent(UUID ownerID, CreateEventDTO createEventDTO) {
         EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
+                .orElseThrow(PartyOwnerNotFoundException::new);
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
         if (event.getFunActivate() == true) {
             String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
@@ -86,7 +87,7 @@ public class EventService {
 
     public void updateEvent(UUID eventId, UpdateEventDTO updateEventDTO) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+                .orElseThrow(EventNotFoundException::new);
         event.setTheme(updateEventDTO.getTheme());
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
@@ -138,8 +139,7 @@ public class EventService {
                 .anyMatch(Guest::isConfirmed);
 
         if (hasConfirmedGuest) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Não é possível deletar esse evento pois já tem convidado confirmado.");
+            throw new EventDeleteConflictException();
         }
 
         guestRepository.findAll().stream()

@@ -101,7 +101,6 @@
    ``` 
   - Confirme que as variáveis estão corretas e salve o arquivo, são elas:
    ``` bash
-   GOOGLE_API_KEY=AIzaSyBI1L7twSZ93RlysEMAPLA4UPtHzX27yUA;SPRING_PROFILES_ACTIVE=local
    ```
   - Executar a Aplicação - No terminal da IDE, inicie a aplicação com o comando:
    ``` bash
