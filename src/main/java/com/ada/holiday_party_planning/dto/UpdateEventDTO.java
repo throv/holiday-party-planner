@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * DTO utiliznemado para atualizar as informações de um evento.
+ * DTO utilizado para atualizar as informações de um evento.
  * Contém validações para garantir que os campos necessários sejam fornecidos.
  */
 
