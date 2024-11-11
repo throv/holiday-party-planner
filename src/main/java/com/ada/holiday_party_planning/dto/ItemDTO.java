@@ -12,6 +12,7 @@ public class ItemDTO {
     private String name;
     private int quantity;
     private double value;
+    private GuestDTO guest;
 
     /**
      * Construtor para inicializar os atributos do item.
@@ -22,11 +23,12 @@ public class ItemDTO {
      * @param value Valor unitário do item.
      */
 
-    public ItemDTO(UUID itemId, String name, int quantity, double value) {
+    public ItemDTO(UUID itemId, String name, int quantity, double value, GuestDTO guest) {
         this.itemId = itemId;
         this.name = name;
         this.quantity = quantity;
         this.value = value;
+        this.guest = guest;
     }
 
     // Getters e Setters
@@ -61,5 +63,13 @@ public class ItemDTO {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    public GuestDTO getGuest() {
+        return guest;
+    }
+
+    public void setGuest(GuestDTO guest) {
+        this.guest = guest;
     }
 }

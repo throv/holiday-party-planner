@@ -32,6 +32,12 @@ public class Item {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
+    //Relacionamento Many-to-One entre Item e Guest
+    @ManyToOne
+    @JoinColumn(name = "guest_id")
+    private Guest guest;
+
+
     /**
      * Construtor padrão.
      */
@@ -98,5 +104,15 @@ public class Item {
     public void setEvent(Event event) {
         this.event = event;
     }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
+
+
 }
 
