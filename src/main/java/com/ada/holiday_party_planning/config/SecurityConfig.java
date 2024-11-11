@@ -3,6 +3,7 @@ package com.ada.holiday_party_planning.config;
 import com.ada.holiday_party_planning.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,9 +26,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .httpBasic(Customizer.withDefaults())
-                .authorizeRequests(authorize  ->
-                        authorize.anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer -> AbstractHttpConfigurer.disable())
+                .authorizeHttpRequests(authorize -> {
+                    authorize
+                            .requestMatchers(HttpMethod.POST, "/party-owners/register").permitAll()
+                            .anyRequest().authenticated();
+                })
                 .build();
     }
 
