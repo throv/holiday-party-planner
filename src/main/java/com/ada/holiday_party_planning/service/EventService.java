@@ -3,6 +3,7 @@ package com.ada.holiday_party_planning.service;
 import com.ada.holiday_party_planning.dto.CreateEventDTO;
 import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
+import com.ada.holiday_party_planning.enums.CategoryFun;
 import com.ada.holiday_party_planning.exceptions.EventDeleteConflictException;
 import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
 import com.ada.holiday_party_planning.exceptions.PartyOwnerNotFoundException;
@@ -71,8 +72,13 @@ public class EventService {
                 .orElseThrow(PartyOwnerNotFoundException::new);
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
         if (event.getFunActivate()) {
-            String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
-            event.setDescriptionTranslateFun(mensagemTraduzida);
+            try {
+                CategoryFun category = CategoryFun.valueOf(event.getCategoryFun().toLowerCase());
+                String mensagemTraduzida = translateFun(event.getDescription(), category);
+                event.setDescriptionTranslateFun(mensagemTraduzida);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: Categoria não encontrada para a descrição do evento.");
+            }
         }
         eventRepository.save(event);
     }
@@ -95,7 +101,13 @@ public class EventService {
         event.setDescription(updateEventDTO.getDescription());
         event.setFunActivate(updateEventDTO.getFunActivate());
         if (event.getFunActivate()) {
-            event.setDescriptionTranslateFun(translateFun(event.getDescription(),event.getCategoryFun()));
+            try {
+                CategoryFun category = CategoryFun.valueOf(event.getCategoryFun().toLowerCase());
+                String mensagemTraduzida = translateFun(event.getDescription(), category);
+                event.setDescriptionTranslateFun(mensagemTraduzida);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Erro: Categoria não encontrada para a descrição do evento.");
+            }
         }
         eventRepository.save(event);
     }
@@ -165,10 +177,16 @@ public class EventService {
      //     */
 
     @Async
-    public String translateFun (String message, String category) {
+    public String translateFun(String message, CategoryFun category) {
         if (message != null) {
             String textTranslate = APIGoogleTranslate.translateMensage(message, "pt-br", "en");
-            return APIFunTranlation.tranlateFun(textTranslate, "minion");
+            String translatedText = APIFunTranlation.tranlateFun(textTranslate, category.name().toLowerCase());
+
+            if (category.isRepeat()) {
+                translatedText = APIGoogleTranslate.translateMensage(translatedText, "en", "pt-br");
+            }
+
+            return translatedText;
         }
         return "";
     }
