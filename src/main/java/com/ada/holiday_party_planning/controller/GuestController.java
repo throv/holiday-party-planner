@@ -70,7 +70,7 @@ public class GuestController {
      * @return Convidado criado e status 201 Created.
      */
 
-    @PostMapping("/register")
+    @PostMapping("/create")
     public ResponseEntity<GuestDTO> createGuest(@RequestBody CreateGuestDTO createGuestDTO) {
 
         Guest guest = guestService.createGuest(createGuestDTO);

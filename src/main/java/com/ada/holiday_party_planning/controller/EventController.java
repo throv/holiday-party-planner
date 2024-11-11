@@ -101,11 +101,9 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{eventId}/send-email")
-    public ResponseEntity<String> sendEmail(@PathVariable UUID eventId, @RequestParam String email) {
-
-        String eventLink = "http://localhost:8080/events/" + eventId;
-        emailService.sendEmail(email, "Event Link", eventLink);
+    @PostMapping("/{eventId}/send-invites")
+    public ResponseEntity<Void> sendInvites(@PathVariable UUID eventId) {
+        eventService.sendInvites(eventId);
         return ResponseEntity.ok().build();
     }
 

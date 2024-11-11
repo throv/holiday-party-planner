@@ -4,6 +4,9 @@ import com.ada.holiday_party_planning.dto.CreateEventDTO;
 import com.ada.holiday_party_planning.dto.EventWithPartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.UpdateEventDTO;
 import com.ada.holiday_party_planning.enums.CategoryFun;
+import com.ada.holiday_party_planning.exceptions.EventDeleteConflictException;
+import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
+import com.ada.holiday_party_planning.exceptions.PartyOwnerNotFoundException;
 import com.ada.holiday_party_planning.mappers.EventMapper;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
@@ -19,10 +22,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * Serviço para gerenciar eventos e a lógica de negócio relacionada aos eventos e seus donos.
@@ -37,6 +38,7 @@ public class EventService {
     private final PartyOwnerRepository partyOwnerRepository;
     private final GuestRepository guestRepository;
     private final ItemRepository itemRepository;
+    private final EmailService emailService;
 
 
     /**
@@ -48,11 +50,12 @@ public class EventService {
      * @param itemRepository       Repositório para manipulação de itens.
      */
 
-    public EventService(EventRepository eventRepository, PartyOwnerRepository partyOwnerRepository, GuestRepository guestRepository, ItemRepository itemRepository) {
+    public EventService(EventRepository eventRepository, PartyOwnerRepository partyOwnerRepository, GuestRepository guestRepository, ItemRepository itemRepository, EmailService emailService) {
         this.eventRepository = eventRepository;
         this.partyOwnerRepository = partyOwnerRepository;
         this.guestRepository = guestRepository;
         this.itemRepository = itemRepository;
+        this.emailService = emailService;
     }
 
     /**
@@ -66,10 +69,8 @@ public class EventService {
     public void createEvent(UUID ownerID, CreateEventDTO createEventDTO) {
         EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
-
+                .orElseThrow(PartyOwnerNotFoundException::new);
         Event event = eventMapper.createDTOToModel(createEventDTO, partyOwner);
-
         if (event.getFunActivate()) {
             CategoryFun category = CategoryFun.valueOf(event.getCategoryFun().toLowerCase());
             String mensagemTraduzida = translateFun(event.getDescription(), category);
@@ -89,7 +90,7 @@ public class EventService {
 
     public void updateEvent(UUID eventId, UpdateEventDTO updateEventDTO) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+                .orElseThrow(EventNotFoundException::new);
         event.setTheme(updateEventDTO.getTheme());
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
@@ -147,8 +148,7 @@ public class EventService {
                 .anyMatch(Guest::isConfirmed);
 
         if (hasConfirmedGuest) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Não é possível deletar esse evento pois já tem convidado confirmado.");
+            throw new EventDeleteConflictException();
         }
 
         guestRepository.findAll().stream()
@@ -182,5 +182,29 @@ public class EventService {
             return translatedText;
         }
         return "";
+    }
+
+    public void sendInvites(UUID eventId) {
+
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found."));
+        List<Guest> guests = guestRepository.findByEvent(event);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy, HH:mm");
+
+        for (Guest guest : guests) {
+            Map<String, String> variables = new HashMap<>();
+            variables.put("eventTitle", event.getTitle());
+            variables.put("hostName", event.getOwner().getName());
+            variables.put("eventDate", event.getDate().format(formatter));
+            variables.put("eventLocation", event.getPlace());
+            variables.put("eventLink", "http://localhost:8080/events/" + event.getEventId());
+
+            try {
+                emailService.sendEmail(guest.getEmail(), "You're Invited!", variables);
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to send email.");
+            }
+        }
     }
 }
