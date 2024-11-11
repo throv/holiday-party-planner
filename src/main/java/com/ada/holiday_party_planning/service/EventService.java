@@ -65,7 +65,7 @@ public class EventService {
     public void createEvent(UUID ownerID, CreateEventDTO createEventDTO) {
         EventMapper eventMapper = new EventMapper(partyOwnerRepository, eventRepository);
         PartyOwner partyOwner = partyOwnerRepository.findById(ownerID)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "PartyOwner not found"));
+                .orElseThrow(PartyOwnerNotFoundException::new);
         Event event =  eventMapper.createDTOToModel(createEventDTO,partyOwner);
         if (event.getFunActivate() == true) {
             String mensagemTraduzida = translateFun(event.getDescription(), event.getDescriptionTranslateFun());
@@ -84,7 +84,7 @@ public class EventService {
 
     public void updateEvent(UUID eventId, UpdateEventDTO updateEventDTO) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+                .orElseThrow(EventNotFoundException::new);
         event.setTheme(updateEventDTO.getTheme());
         event.setTitle(updateEventDTO.getTitle());
         event.setDate(updateEventDTO.getDate());
@@ -136,8 +136,7 @@ public class EventService {
                 .anyMatch(Guest::isConfirmed);
 
         if (hasConfirmedGuest) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Não é possível deletar esse evento pois já tem convidado confirmado.");
+            throw new EventDeleteConflictException();
         }
 
         guestRepository.findAll().stream()
