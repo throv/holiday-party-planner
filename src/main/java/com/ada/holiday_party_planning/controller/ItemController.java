@@ -1,14 +1,17 @@
 package com.ada.holiday_party_planning.controller;
 
 import com.ada.holiday_party_planning.dto.ItemDTO;
-import com.ada.holiday_party_planning.exceptions.ItemNotFoundException;
 import com.ada.holiday_party_planning.mappers.ItemMapper;
-import com.ada.holiday_party_planning.model.Event;
+import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.Item;
-import com.ada.holiday_party_planning.service.EventService;
+import com.ada.holiday_party_planning.repository.GuestRepository;
+import com.ada.holiday_party_planning.repository.ItemRepository;
 import com.ada.holiday_party_planning.service.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +24,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/item")
 public class ItemController {
+
+
+    @Autowired
+    private ItemRepository itemRepository; //Repositório de itens
+
+    @Autowired //Injeta automaticamente o GuestRepository, que é gerenciado pelo Spring Framework
+    private GuestRepository guestRepository; //Injeta o repositório de Guest
 
     /**
      * Construtor que injeta o serviço de itens.
@@ -82,15 +92,29 @@ public class ItemController {
      */
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable UUID id) {
-        try{
-            itemService.deleteItem(id);
-            return ResponseEntity.noContent().build();
-        }
-        catch(ItemNotFoundException e ){
-            return ResponseEntity.notFound().build();
-        }
-
+    public void deleteItem(@PathVariable UUID id) {
+        itemService.deleteItem(id);
     }
 
+    //
+    //Endpoint para listar todos os itens de um convidado específico
+    @GetMapping("/guest/{guestId}")
+    public ResponseEntity<List<Item>> getItemsByGuest(@PathVariable UUID guestId) {
+        return ResponseEntity.ok(itemService.itemsByGuestId(guestId));
+    }
+
+    //Endpoint para adicionar um novo item a um convidado específico
+    @PostMapping("{itemId}/guest/{guestId}")
+    public ResponseEntity<Item> addItemToGuest(@PathVariable UUID guestId, @PathVariable UUID itemId) {
+        Item item = itemService.addItemToGuest(guestId, itemId);
+        // Retorna o item criado com status HTTP 201 (Created)
+        return new ResponseEntity<>(item, HttpStatus.CREATED);
+    }
+
+    //Endpoint para remover um item específico de um convidado
+    @DeleteMapping("{itemId}/guest/{guestId}")
+    public ResponseEntity<ItemDTO> deleteItemFromGuest(@PathVariable UUID guestId, @PathVariable UUID itemId) {
+        Item item = itemService.removeGuestFromItem(guestId, itemId);
+        return new ResponseEntity<>(ItemMapper.toDTO(item), HttpStatus.OK);
+    }
 }
