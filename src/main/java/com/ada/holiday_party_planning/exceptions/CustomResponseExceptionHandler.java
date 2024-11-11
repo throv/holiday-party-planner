@@ -128,4 +128,15 @@ public class CustomResponseExceptionHandler extends ResponseEntityExceptionHandl
                 exception.getMessage()
         );
     }
+
+    @ExceptionHandler(EventDeleteConflictException.class)
+    public ResponseEntity<ExceptionResponse> eventDeleteConflictHandler(EventDeleteConflictException exception) {
+
+        return getExceptionResponse(
+                HttpStatus.NOT_FOUND,
+                "EVENT_CANNOT_BE_DELETED",
+                exception.getMessage()
+        );
+    }
+
 }
