@@ -64,6 +64,10 @@ public class Guest {
 
     }
 
+    public Guest(String name, String email, Event event) {
+
+    }
+
     // Getters e Setters
 
     public UUID getGuestId() {

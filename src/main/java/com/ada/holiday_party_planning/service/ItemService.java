@@ -2,7 +2,7 @@ package com.ada.holiday_party_planning.service;
 
 import com.ada.holiday_party_planning.exceptions.EventNotFoundException;
 import com.ada.holiday_party_planning.exceptions.ItemNotFoundException;
-import com.ada.holiday_party_planning.mappers.ItemMapper;
+import com.ada.holiday_party_planning.exceptions.GuestNotFoundException;
 import com.ada.holiday_party_planning.model.Event;
 import com.ada.holiday_party_planning.model.Guest;
 import com.ada.holiday_party_planning.model.Item;
@@ -117,7 +117,7 @@ public class ItemService {
     public Item addItemToGuest(UUID guestId, UUID itemId) {
         // Busca o Guest pelo ID no banco de dados
         Guest guest = guestRepository.findById(guestId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Guest not found"));
+                .orElseThrow(GuestNotFoundException::new);
 
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
         // Associa o convidado ao item
