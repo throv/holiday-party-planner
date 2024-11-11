@@ -85,15 +85,16 @@ public class PartyOwnerController {
      */
 
     @PutMapping("/update/{ownerId}")
-    public ResponseEntity<PartyOwnerDTO> updatePartyOwner(@RequestBody PartyOwnerDTO partyOwnerDTO, @PathVariable UUID ownerId) {
+    public ResponseEntity<PartyOwnerDTO> updatePartyOwner(
+            @RequestBody UpdatePartyOwnerDTO partyOwnerDTO,
+            @PathVariable UUID ownerId
+    ) {
+        Optional<PartyOwnerDTO> updatedPartyOwner = partyOwnerService.updatePartyOwner(ownerId, partyOwnerDTO);
 
-        Optional<PartyOwnerDTO> newPartyOwner = partyOwnerService.updatePartyOwner(ownerId, partyOwnerDTO);
-
-        if(newPartyOwner.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(newPartyOwner.get());
-        }
+        return updatedPartyOwner
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
 
 }

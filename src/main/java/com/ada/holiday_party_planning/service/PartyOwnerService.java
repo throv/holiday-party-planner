@@ -1,9 +1,6 @@
 package com.ada.holiday_party_planning.service;
 
-import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerLoginDTO;
-import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
+import com.ada.holiday_party_planning.dto.*;
 import com.ada.holiday_party_planning.exceptions.EmailAlreadyExistsException;
 import com.ada.holiday_party_planning.exceptions.InvalidCredentialsException;
 import com.ada.holiday_party_planning.exceptions.PartyOwnerNotFoundException;
@@ -131,11 +128,10 @@ public class PartyOwnerService {
      * @return O DTO do proprietário atualizado, se encontrado.
      */
 
-    public Optional<PartyOwnerDTO> updatePartyOwner(UUID ownerId, PartyOwnerDTO newPartyOwner) {
-
+    public Optional<PartyOwnerDTO> updatePartyOwner(UUID ownerId, UpdatePartyOwnerDTO newPartyOwner) {
         Optional<PartyOwner> oldPartyOwner = partyOwnerRepository.findById(ownerId);
 
-        if(oldPartyOwner.isPresent()) {
+        if (oldPartyOwner.isPresent()) {
             PartyOwner existingPartyOwner = oldPartyOwner.get();
             PartyOwnerMapper.updatePartyOwnerDTO(newPartyOwner, existingPartyOwner);
 
@@ -146,6 +142,7 @@ public class PartyOwnerService {
 
         return Optional.empty();
     }
+
 
 
 }

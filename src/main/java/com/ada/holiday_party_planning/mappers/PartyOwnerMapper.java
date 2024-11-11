@@ -3,6 +3,7 @@ package com.ada.holiday_party_planning.mappers;
 import com.ada.holiday_party_planning.dto.CreatePartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerDTO;
 import com.ada.holiday_party_planning.dto.PartyOwnerLoginResponseDTO;
+import com.ada.holiday_party_planning.dto.UpdatePartyOwnerDTO;
 import com.ada.holiday_party_planning.model.PartyOwner;
 
 import java.util.List;
@@ -115,7 +116,7 @@ public class PartyOwnerMapper {
      * @param partyOwner O objeto PartyOwner a ser atualizado.
      */
 
-    public static void updatePartyOwnerDTO(PartyOwnerDTO ownerDTO, PartyOwner partyOwner) {
+    public static void updatePartyOwnerDTO(UpdatePartyOwnerDTO ownerDTO, PartyOwner partyOwner) {
         partyOwner.setName(ownerDTO.getName());
         partyOwner.setEmail(ownerDTO.getEmail());
     }
