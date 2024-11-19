@@ -1,4 +1,4 @@
-# Plataforma de Organização de Festas de Fim de Ano
+# Plataforma de Organização de Festas de Final de Ano
 
 ## Descrição
 
