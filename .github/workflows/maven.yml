@@ -27,5 +27,7 @@ jobs:
         java-version: '22'
         distribution: 'oracle'
         cache: maven
-    - name: Build with Maven
+    - name: Build
       run: mvn -B package --file pom.xml
+    - name: Verify
+      run: mvn --batch-mode --update-snapshots verify
