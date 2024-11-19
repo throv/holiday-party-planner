@@ -9,7 +9,7 @@ class ItemServiceTest {
 
     @Test
     void createItem() {
-        Assert.isTrue(true, "Forçando sucesso");
+        Assert.isTrue(false, "Forçando erro");
     }
 
     @Test
